@@ -29,7 +29,9 @@ At the end of each session, update this section with current progress:
 #### Current Progress Log
 | Date | Phase | What was done | Status |
 |------|-------|--------------|--------|
-| 2026-01-21 | Phase 1-2 | Project setup, Tailwind config, Layout components, Homepage sections | In Progress |
+| 2026-01-21 | Phase 1-2 | Project setup, Tailwind config, Layout components, Homepage sections, Portfolio, Services, Blog, Legal pages | Completed |
+
+**GitHub Repository:** https://github.com/StrikeLike/Website-Foto-in-Wien
 
 ---
 
