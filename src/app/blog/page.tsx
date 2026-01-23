@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
 import { blogPosts } from "@/data/blog";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 export default function BlogPage() {
-  useSmoothScroll();
 
   return (
     <>

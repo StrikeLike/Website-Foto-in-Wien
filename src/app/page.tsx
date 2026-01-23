@@ -10,11 +10,8 @@ import {
   AboutTeaser,
   CTASection,
 } from "@/components/sections";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 export default function Home() {
-  useSmoothScroll();
-
   return (
     <>
       <Header />

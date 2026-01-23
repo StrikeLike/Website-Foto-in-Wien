@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header, Footer } from "@/components/layout";
 import { Button } from "@/components/ui";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 const pricingCategories = [
   {
@@ -223,7 +222,6 @@ const faq = [
 ];
 
 export default function PreisePage() {
-  useSmoothScroll();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (

@@ -6,14 +6,12 @@ import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { getServiceBySlug, services } from "@/data/services";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 interface ServicePageClientProps {
   slug: string;
 }
 
 export default function ServicePageClient({ slug }: ServicePageClientProps) {
-  useSmoothScroll();
   const service = getServiceBySlug(slug);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 

@@ -5,14 +5,12 @@ import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { getProjectBySlug, projects } from "@/data/portfolio";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 interface ProjectPageClientProps {
   slug: string;
 }
 
 export default function ProjectPageClient({ slug }: ProjectPageClientProps) {
-  useSmoothScroll();
   const project = getProjectBySlug(slug);
 
   if (!project) {

@@ -28,14 +28,14 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 bg-[#1b1b1b] transition-all duration-300 ${
+        isScrolled ? "shadow-lg shadow-black/20" : ""
       }`}
     >
       <nav className="container mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="text-xl md:text-2xl font-semibold tracking-tight">
+          <Link href="/" className="text-xl md:text-2xl font-semibold tracking-tight text-white">
             Foto in Wien
           </Link>
 
@@ -45,14 +45,14 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+                className="text-base font-medium text-gray-300 hover:text-white transition-colors"
               >
                 {item.name}
               </Link>
             ))}
             <Link
               href="/kontakt/"
-              className="ml-4 px-6 py-2.5 bg-black text-white text-sm font-medium hover:bg-hover transition-colors"
+              className="ml-4 px-6 py-2.5 bg-[#1b1b1b] text-white text-sm font-medium hover:bg-black transition-colors rounded-full"
             >
               Anfrage senden
             </Link>
@@ -61,7 +61,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2"
+            className="lg:hidden p-2 text-white"
             aria-label="Menu"
           >
             <i
@@ -80,7 +80,7 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-border"
+            className="lg:hidden bg-[#1b1b1b] border-t border-gray-700"
           >
             <div className="container mx-auto px-4 py-6">
               <div className="flex flex-col gap-4">
@@ -89,7 +89,7 @@ export function Header() {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-lg font-medium text-text-secondary hover:text-text-primary transition-colors py-2"
+                    className="text-lg font-medium text-gray-300 hover:text-white transition-colors py-2"
                   >
                     {item.name}
                   </Link>
@@ -97,7 +97,7 @@ export function Header() {
                 <Link
                   href="/kontakt/"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="mt-4 px-6 py-3 bg-black text-white text-center font-medium hover:bg-hover transition-colors"
+                  className="mt-4 px-6 py-3 bg-[#1b1b1b] text-white text-center font-medium hover:bg-black transition-colors rounded-full"
                 >
                   Anfrage senden
                 </Link>

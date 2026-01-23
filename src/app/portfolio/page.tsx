@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import { Header, Footer } from "@/components/layout";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
 import { projects } from "@/data/portfolio";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 export default function PortfolioPage() {
-  useSmoothScroll();
 
   return (
     <>

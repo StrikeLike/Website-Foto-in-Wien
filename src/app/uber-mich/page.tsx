@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { Header, Footer } from "@/components/layout";
 import { Button } from "@/components/ui";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 const timeline = [
   { year: "2004", event: "Beginn der professionellen Fotografie" },
@@ -44,8 +43,6 @@ const testimonials = [
 ];
 
 export default function UberMichPage() {
-  useSmoothScroll();
-
   return (
     <>
       <Header />

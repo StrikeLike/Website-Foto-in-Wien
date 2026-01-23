@@ -5,14 +5,12 @@ import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { getBlogPostBySlug, blogPosts } from "@/data/blog";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 interface BlogPostClientProps {
   slug: string;
 }
 
 export default function BlogPostClient({ slug }: BlogPostClientProps) {
-  useSmoothScroll();
   const post = getBlogPostBySlug(slug);
 
   if (!post) {

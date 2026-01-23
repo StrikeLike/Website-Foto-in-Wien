@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Header, Footer } from "@/components/layout";
 import { Button } from "@/components/ui";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 interface FormData {
   name: string;
@@ -27,8 +26,6 @@ const services = [
 ];
 
 export default function KontaktPage() {
-  useSmoothScroll();
-
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",

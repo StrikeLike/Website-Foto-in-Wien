@@ -5,10 +5,8 @@ import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { services } from "@/data/services";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 export default function LeistungenPage() {
-  useSmoothScroll();
 
   return (
     <>

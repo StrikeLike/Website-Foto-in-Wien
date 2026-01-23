@@ -26,8 +26,16 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-foreground text-white">
-      <div className="container mx-auto px-4 md:px-8 py-16">
+    <footer className="relative bg-[#1b1b1b] text-white">
+      {/* Background Image with Overlay (placeholder for future image) */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+        style={{ backgroundImage: "url('/images/footer-bg.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-[#1b1b1b]/90" />
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4 md:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Column */}
           <div className="space-y-6">

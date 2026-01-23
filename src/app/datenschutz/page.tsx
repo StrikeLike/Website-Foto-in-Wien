@@ -3,10 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
-import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 export default function DatenschutzPage() {
-  useSmoothScroll();
 
   return (
     <>
