@@ -61,16 +61,24 @@ export function Testimonials() {
   }, [isPaused]);
 
   return (
-    <section className="section">
-      <div className="container px-4 md:px-8">
+    <section className="section-dark py-24 md:py-32">
+      {/* Decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-white/[0.02] blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-white/[0.02] blur-3xl" />
+      </div>
+
+      <div className="container px-4 md:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-h1 font-semibold mb-4">Kundenstimmen</h2>
-          <p className="text-text-secondary max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight text-white">
+            Kundenstimmen
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
             Was meine Kunden uber die Zusammenarbeit sagen.
           </p>
         </motion.div>
@@ -80,47 +88,60 @@ export function Testimonials() {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="text-center space-y-8"
-            >
-              <div className="flex justify-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <i key={i} className="fa-solid fa-star text-yellow-400" />
-                ))}
-              </div>
+          {/* Glass Card for testimonial */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass-card-on-dark p-8 md:p-12"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="text-center space-y-8"
+              >
+                {/* Stars */}
+                <div className="flex justify-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <i key={i} className="fa-solid fa-star text-yellow-400 text-lg" />
+                  ))}
+                </div>
 
-              <blockquote className="text-xl md:text-2xl font-light italic text-text-primary leading-relaxed">
-                &ldquo;{testimonials[current].quote}&rdquo;
-              </blockquote>
+                {/* Quote */}
+                <blockquote className="text-xl md:text-2xl font-light italic text-white/90 leading-relaxed">
+                  &ldquo;{testimonials[current].quote}&rdquo;
+                </blockquote>
 
-              <div>
-                <p className="font-semibold text-lg">
-                  {testimonials[current].author}
-                </p>
-                <p className="text-text-secondary">
-                  {testimonials[current].position}
-                </p>
-                <p className="text-text-secondary text-sm">
-                  {testimonials[current].company}
-                </p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                {/* Author */}
+                <div>
+                  <p className="font-semibold text-lg text-white">
+                    {testimonials[current].author}
+                  </p>
+                  <p className="text-gray-400">
+                    {testimonials[current].position}
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    {testimonials[current].company}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
 
           {/* Navigation Dots */}
-          <div className="flex justify-center gap-2 mt-12">
+          <div className="flex justify-center gap-2 mt-8">
             {testimonials.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrent(idx)}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  idx === current ? "bg-black w-8" : "bg-gray-300 w-2"
+                  idx === current
+                    ? "bg-white w-8"
+                    : "bg-white/30 w-2 hover:bg-white/50"
                 }`}
                 aria-label={`Go to testimonial ${idx + 1}`}
               />
