@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navigation = [
+  { name: "Startseite", href: "/" },
   { name: "Portfolio", href: "/portfolio/" },
   { name: "Leistungen", href: "/leistungen/" },
   { name: "Preise", href: "/preise/" },
