@@ -26,6 +26,7 @@ After EVERY work session or significant progress, Claude MUST:
 | 2026-01-25 | Docs | Added Security, Glassmorphism, Carousel specs | Completed |
 | 2026-01-25 | Phase 2 | Elegant backgrounds all pages + glassmorphism | Completed |
 | 2026-01-26 | Phase 2 | Interactive mouse parallax for 20 background effects | Completed |
+| 2026-02-01 | Phase 2 | Scroll transition test pages (sticky overlap + scale + parallax + DoF) | Completed |
 
 **GitHub:** https://github.com/StrikeLike/Website-Foto-in-Wien
 
