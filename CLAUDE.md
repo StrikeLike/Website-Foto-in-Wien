@@ -27,6 +27,8 @@ After EVERY work session or significant progress, Claude MUST:
 | 2026-01-25 | Phase 2 | Elegant backgrounds all pages + glassmorphism | Completed |
 | 2026-01-26 | Phase 2 | Interactive mouse parallax for 20 background effects | Completed |
 | 2026-02-01 | Phase 2 | Scroll transition test pages (sticky overlap + scale + parallax + DoF) | Completed |
+| 2026-02-03 | Phase 2 | New homepage with dark/light mode, photography backgrounds, no scroll overlap | Completed |
+| 2026-02-03 | Docs | Created TASKS-UIUX.md with 70+ improvement tasks organized by priority | Completed |
 
 **GitHub:** https://github.com/StrikeLike/Website-Foto-in-Wien
 
