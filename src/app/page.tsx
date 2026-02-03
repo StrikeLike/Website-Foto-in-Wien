@@ -10,10 +10,11 @@ import {
   AboutTeaser,
   CTASection,
 } from "@/components/sections";
+import { MouseProvider } from "@/components/effects";
 
 export default function Home() {
   return (
-    <>
+    <MouseProvider>
       <Header />
       <main>
         <Hero />
@@ -25,6 +26,6 @@ export default function Home() {
         <CTASection />
       </main>
       <Footer />
-    </>
+    </MouseProvider>
   );
 }

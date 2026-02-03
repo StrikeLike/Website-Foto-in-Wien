@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui";
+import { TransitionSection, CameraGridLight } from "@/components/effects";
 
 const featuredProjects = [
   {
@@ -97,8 +98,9 @@ export function FeaturedPortfolio() {
   };
 
   return (
-    <section className="section bg-gray-50">
-      <div className="container px-4 md:px-8">
+    <TransitionSection dark={false} background={<CameraGridLight />} index={3}>
+      <div className="py-24 md:py-32">
+        <div className="container px-4 md:px-8">
         {/* Section Header - Apple style with navigation */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -253,7 +255,8 @@ export function FeaturedPortfolio() {
             Gesamtes Portfolio ansehen
           </Button>
         </motion.div>
+        </div>
       </div>
-    </section>
+    </TransitionSection>
   );
 }

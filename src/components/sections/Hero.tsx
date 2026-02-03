@@ -1,58 +1,51 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Button } from "@/components/ui";
+import { CameraGridLight } from "@/components/effects";
 
 export function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+
+  // Hero scroll effects
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const heroScale = useTransform(heroProgress, [0, 1], [1, 0.92]);
+  const heroOpacity = useTransform(heroProgress, [0, 0.8], [1, 0]);
+  const heroBgY = useTransform(heroProgress, [0, 1], ["0%", "25%"]);
+  const heroContentY = useTransform(heroProgress, [0, 1], ["0%", "40%"]);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100" />
+    <motion.section
+      ref={heroRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white"
+      style={{ scale: heroScale }}
+    >
+      {/* Background with parallax */}
+      <motion.div className="absolute inset-0" style={{ y: heroBgY }}>
+        <CameraGridLight />
+      </motion.div>
 
-      {/* Decorative Glass Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Large glass circle - top right */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-          className="absolute -top-32 -right-32 w-96 h-96 rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(0,0,0,0.03) 0%, transparent 70%)',
-          }}
-        />
+      {/* Depth layers */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
+        <div className="absolute top-[20%] left-[15%] w-40 h-40 rounded-full bg-black/[0.02] blur-2xl" />
+        <div className="absolute bottom-[25%] right-[10%] w-60 h-60 rounded-full bg-black/[0.015] blur-3xl" />
+      </motion.div>
 
-        {/* Glass card decoration - left */}
-        <motion.div
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="absolute top-1/4 -left-20 w-64 h-64 glass-dark rounded-3xl rotate-12"
-        />
-
-        {/* Small glass element - bottom */}
-        <motion.div
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="absolute bottom-1/4 right-1/4 w-32 h-32 glass-dark rounded-2xl -rotate-6"
-        />
-
-        {/* Subtle grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0,0,0,1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px',
-          }}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="container relative z-10 px-4 md:px-8 pt-20">
+      {/* Content with parallax */}
+      <motion.div
+        className="container relative z-10 px-4 md:px-8 pt-20"
+        style={{ y: heroContentY, opacity: heroOpacity }}
+      >
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.div
@@ -68,9 +61,9 @@ export function Hero() {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-hero font-semibold leading-tight mb-6"
           >
             Fotograf in Wien
@@ -134,15 +127,30 @@ export function Hero() {
             className="absolute bottom-8 left-1/2 -translate-x-1/2"
           >
             <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="text-text-secondary"
+              className="w-8 h-14 border-2 border-black/20 rounded-full flex justify-center pt-3"
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
-              <i className="fa-solid fa-chevron-down text-2xl" />
+              <motion.div
+                className="w-1.5 h-3 bg-black/40 rounded-full"
+                animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              />
             </motion.div>
           </motion.div>
         </div>
-      </div>
-    </section>
+      </motion.div>
+
+      {/* Floating particles */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={`hero-particle-${i}`}
+          className="absolute w-1 h-1 rounded-full bg-black/20"
+          style={{ left: `${15 + i * 12}%`, top: `${25 + (i % 4) * 15}%` }}
+          animate={{ y: [-15, 15, -15], opacity: [0.1, 0.3, 0.1], scale: [1, 1.3, 1] }}
+          transition={{ duration: 5 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
+        />
+      ))}
+    </motion.section>
   );
 }

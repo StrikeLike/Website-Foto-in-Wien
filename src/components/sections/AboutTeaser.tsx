@@ -2,17 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
+import { TransitionSection, FocusFrameLight } from "@/components/effects";
 
 export function AboutTeaser() {
   return (
-    <section className="section bg-gray-50 relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-96 h-96 rounded-full bg-black/[0.02] blur-3xl" />
-      </div>
-
-      <div className="container px-4 md:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <TransitionSection dark={false} background={<FocusFrameLight />} enableDoF index={5}>
+      <div className="py-24 md:py-32">
+        <div className="container px-4 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto">
           {/* Image with glass frame */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -109,7 +106,8 @@ export function AboutTeaser() {
             </div>
           </motion.div>
         </div>
+        </div>
       </div>
-    </section>
+    </TransitionSection>
   );
 }
