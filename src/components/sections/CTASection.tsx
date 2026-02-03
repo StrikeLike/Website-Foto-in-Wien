@@ -6,7 +6,7 @@ import { TransitionSection, ViewfinderDark } from "@/components/effects";
 
 export function CTASection() {
   return (
-    <TransitionSection dark={true} background={<ViewfinderDark />} enableDoF index={6}>
+    <TransitionSection dark={true} background={<ViewfinderDark />} index={6}>
       <div className="py-24 md:py-32">
         <div className="container px-4 md:px-8">
           <motion.div

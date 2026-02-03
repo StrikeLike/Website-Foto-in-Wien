@@ -6,7 +6,7 @@ import { TransitionSection, FocusFrameLight } from "@/components/effects";
 
 export function AboutTeaser() {
   return (
-    <TransitionSection dark={false} background={<FocusFrameLight />} enableDoF index={5}>
+    <TransitionSection dark={false} background={<FocusFrameLight />} index={5}>
       <div className="py-24 md:py-32">
         <div className="container px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto">

@@ -1,34 +1,16 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
 import { CameraGridLight } from "@/components/effects";
 
 export function Hero() {
-  const heroRef = useRef<HTMLElement>(null);
-
-  // Hero scroll effects
-  const { scrollYProgress: heroProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const heroScale = useTransform(heroProgress, [0, 1], [1, 0.92]);
-  const heroOpacity = useTransform(heroProgress, [0, 0.8], [1, 0]);
-  const heroBgY = useTransform(heroProgress, [0, 1], ["0%", "25%"]);
-  const heroContentY = useTransform(heroProgress, [0, 1], ["0%", "40%"]);
-
   return (
-    <motion.section
-      ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white"
-      style={{ scale: heroScale }}
-    >
-      {/* Background with parallax */}
-      <motion.div className="absolute inset-0" style={{ y: heroBgY }}>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
+      {/* Background */}
+      <div className="absolute inset-0">
         <CameraGridLight />
-      </motion.div>
+      </div>
 
       {/* Depth layers */}
       <motion.div
@@ -41,11 +23,8 @@ export function Hero() {
         <div className="absolute bottom-[25%] right-[10%] w-60 h-60 rounded-full bg-black/[0.015] blur-3xl" />
       </motion.div>
 
-      {/* Content with parallax */}
-      <motion.div
-        className="container relative z-10 px-4 md:px-8 pt-20"
-        style={{ y: heroContentY, opacity: heroOpacity }}
-      >
+      {/* Content */}
+      <div className="container relative z-10 px-4 md:px-8 pt-20">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.div
@@ -56,7 +35,7 @@ export function Hero() {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 glass-dark-strong rounded-full text-sm font-medium text-gray-600">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              Verfugbar fur neue Projekte
+              Verfügbar für neue Projekte
             </span>
           </motion.div>
 
@@ -75,8 +54,8 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-text-secondary font-light mb-10 max-w-2xl mx-auto"
           >
-            Professionelle Business, Event und Produktfotografie mit uber 20
-            Jahren Erfahrung. Ihr Partner fur hochwertige visuelle Inhalte in
+            Professionelle Business, Event und Produktfotografie mit über 20
+            Jahren Erfahrung. Ihr Partner für hochwertige visuelle Inhalte in
             Wien.
           </motion.p>
 
@@ -139,7 +118,7 @@ export function Hero() {
             </motion.div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Floating particles */}
       {[...Array(6)].map((_, i) => (
@@ -151,6 +130,6 @@ export function Hero() {
           transition={{ duration: 5 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
         />
       ))}
-    </motion.section>
+    </section>
   );
 }

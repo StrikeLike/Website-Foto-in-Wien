@@ -62,7 +62,7 @@ export function Testimonials() {
   }, [isPaused]);
 
   return (
-    <TransitionSection dark={true} background={<SafeZonesDark />} enableDoF index={4}>
+    <TransitionSection dark={true} background={<SafeZonesDark />} index={4}>
       <div className="py-24 md:py-32">
         <div className="container px-4 md:px-8">
           <motion.div
