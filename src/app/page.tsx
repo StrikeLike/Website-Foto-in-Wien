@@ -46,35 +46,271 @@ function MouseProvider({ children }: { children: ReactNode }) {
 const useMouse = () => useContext(MouseContext);
 
 // ============================================
-// THEME TOGGLE
+// STICKY HEADER
 // ============================================
-function ThemeToggle() {
+function Header() {
   const { theme, toggleTheme } = useTheme();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isDark = theme === 'dark';
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { label: 'Startseite', href: '/' },
+    { label: 'Portfolio', href: '/portfolio/' },
+    { label: 'Leistungen', href: '/leistungen/' },
+    { label: 'Preise', href: '/preise/' },
+    { label: 'Kontakt', href: '/kontakt/' },
+  ];
+
   return (
-    <motion.button
-      onClick={toggleTheme}
-      className={`fixed top-6 right-6 z-[300] w-14 h-14 rounded-full backdrop-blur-xl flex items-center justify-center shadow-2xl transition-all duration-500 ${
-        isDark ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20' : 'bg-black/10 border border-black/20 text-black hover:bg-black/20'
-      }`}
+    <>
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${
+          scrolled
+            ? isDark
+              ? 'bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/10'
+              : 'bg-white/80 backdrop-blur-xl border-b border-black/5 shadow-sm'
+            : 'bg-transparent'
+        }`}
+      >
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link href="/" className="relative z-10">
+              <motion.span
+                className={`text-xl md:text-2xl font-bold tracking-tight transition-colors duration-500 ${
+                  isDark ? 'text-white' : 'text-[#0a0a0a]'
+                }`}
+                whileHover={{ scale: 1.02 }}
+              >
+                Foto in Wien
+              </motion.span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors duration-300 hover:opacity-70 ${
+                    isDark ? 'text-white/80 hover:text-white' : 'text-gray-600 hover:text-black'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Right side: Theme toggle + Mobile menu button */}
+            <div className="flex items-center gap-4">
+              {/* Theme Toggle */}
+              <motion.button
+                onClick={toggleTheme}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isDark
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-black/5 hover:bg-black/10 text-gray-600'
+                }`}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.i
+                    key={theme}
+                    className={isDark ? 'fa-solid fa-sun text-sm' : 'fa-solid fa-moon text-sm'}
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </AnimatePresence>
+              </motion.button>
+
+              {/* Mobile Menu Button */}
+              <motion.button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`lg:hidden w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isDark
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-black/5 hover:bg-black/10 text-gray-600'
+                }`}
+                whileTap={{ scale: 0.95 }}
+              >
+                <i className={`fa-solid ${mobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-sm`} />
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className={`fixed inset-0 z-[190] lg:hidden ${
+              isDark ? 'bg-[#0a0a0a]/95' : 'bg-white/95'
+            } backdrop-blur-xl`}
+          >
+            <div className="flex flex-col items-center justify-center h-full gap-8">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.3, delay: i * 0.1 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`text-2xl font-semibold transition-colors ${
+                      isDark ? 'text-white hover:text-white/70' : 'text-gray-900 hover:text-gray-500'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ============================================
+// FLOATING WHATSAPP BUTTON
+// ============================================
+function WhatsAppButton() {
+  const { theme } = useTheme();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <motion.a
+      href="https://wa.me/436608459895"
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 1 }}
+      className={`fixed bottom-6 right-6 z-[180] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-colors duration-300 ${
+        theme === 'dark'
+          ? 'bg-[#25D366] text-white hover:bg-[#20BD5A]'
+          : 'bg-[#25D366] text-white hover:bg-[#20BD5A]'
+      }`}
+      aria-label="WhatsApp kontaktieren"
     >
-      <AnimatePresence mode="wait">
-        <motion.i
-          key={theme}
-          className={isDark ? 'fa-solid fa-sun text-xl' : 'fa-solid fa-moon text-xl'}
-          initial={{ rotate: -90, opacity: 0 }}
-          animate={{ rotate: 0, opacity: 1 }}
-          exit={{ rotate: 90, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        />
-      </AnimatePresence>
-    </motion.button>
+      <i className="fa-brands fa-whatsapp text-2xl" />
+    </motion.a>
+  );
+}
+
+// ============================================
+// COOKIE CONSENT BANNER
+// ============================================
+function CookieConsent() {
+  const { theme } = useTheme();
+  const [visible, setVisible] = useState(false);
+  const isDark = theme === 'dark';
+
+  useEffect(() => {
+    const consent = localStorage.getItem('cookie-consent');
+    if (!consent) {
+      const timer = setTimeout(() => setVisible(true), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const acceptAll = () => {
+    localStorage.setItem('cookie-consent', JSON.stringify({ necessary: true, analytics: true, marketing: true }));
+    setVisible(false);
+  };
+
+  const acceptNecessary = () => {
+    localStorage.setItem('cookie-consent', JSON.stringify({ necessary: true, analytics: false, marketing: false }));
+    setVisible(false);
+  };
+
+  if (!visible) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 100, opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className={`fixed bottom-0 left-0 right-0 z-[250] p-4 md:p-6 ${
+          isDark
+            ? 'bg-[#1a1a1a]/95 border-t border-white/10'
+            : 'bg-white/95 border-t border-black/5 shadow-2xl'
+        } backdrop-blur-xl`}
+      >
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex-1">
+              <p className={`text-sm md:text-base ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <i className="fa-solid fa-cookie-bite mr-2" />
+                Diese Website verwendet Cookies, um Ihnen das beste Erlebnis zu bieten.
+              </p>
+              <p className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                Weitere Informationen finden Sie in unserer{' '}
+                <Link href="/datenschutz/" className="underline hover:no-underline">
+                  Datenschutzerklärung
+                </Link>
+                .
+              </p>
+            </div>
+            <div className="flex gap-3 w-full md:w-auto">
+              <button
+                onClick={acceptNecessary}
+                className={`flex-1 md:flex-none px-4 py-2 text-sm font-medium rounded-full transition-all ${
+                  isDark
+                    ? 'border border-white/20 text-white hover:bg-white/10'
+                    : 'border border-black/20 text-gray-600 hover:bg-black/5'
+                }`}
+              >
+                Nur notwendige
+              </button>
+              <button
+                onClick={acceptAll}
+                className={`flex-1 md:flex-none px-6 py-2 text-sm font-medium rounded-full transition-all ${
+                  isDark
+                    ? 'bg-white text-black hover:bg-white/90'
+                    : 'bg-black text-white hover:bg-black/90'
+                }`}
+              >
+                Alle akzeptieren
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
@@ -345,11 +581,13 @@ const services = [
 ];
 
 const clients = [
-  { name: "TU Wien", icon: "fa-solid fa-graduation-cap" },
-  { name: "Autonom Health", icon: "fa-solid fa-heart-pulse" },
-  { name: "Gerstner", icon: "fa-solid fa-utensils" },
-  { name: "V-Suit", icon: "fa-solid fa-shirt" },
-  { name: "Hope for the Future", icon: "fa-solid fa-hands-holding-heart" },
+  { name: "Thales", logo: "/images/clients/Thales_Group-Logo.wine.png", scale: 1.6 },
+  { name: "TU Wien", logo: "/images/clients/tu-wien-logo.png", scale: 1 },
+  { name: "Gourmet", logo: "/images/clients/gourmet-logo.png", scale: 1.4 },
+  { name: "Gerstner", logo: "/images/clients/gerstner-logo.png", scale: 1.4 },
+  { name: "AIM Group", logo: "/images/clients/aim group international.png", scale: 1.1 },
+  { name: "First Event", logo: "/images/clients/cropped-first_event_logo.png", scale: 1.1 },
+  { name: "Autonom Health", logo: "/images/clients/autonom_Health.png", scale: 1.2 },
 ];
 
 const testimonials = [
@@ -360,12 +598,12 @@ const testimonials = [
 ];
 
 const featuredProjects = [
-  { slug: "cristina-studio", title: "Cristina", category: "Portrait", description: "Studio Portrait", dark: true },
-  { slug: "andrei-portrait", title: "Andrei", category: "Portrait", description: "Portrait Studio", dark: false },
-  { slug: "katarina-boudoir", title: "Katarina", category: "Boudoir", description: "Portrait Studio", dark: true },
-  { slug: "tu-wien-event", title: "TU Wien", category: "Event", description: "i2ncubator", dark: true },
-  { slug: "autonom-health", title: "Autonom Health", category: "Produkt", description: "HRV-Geräte", dark: false },
-  { slug: "gerstner-food", title: "Gerstner", category: "Food", description: "Kulinarik", dark: true },
+  { slug: "cristina-studio", title: "Cristina", category: "Portrait", description: "Studio Portrait", dark: true, image: "/images/portfolio/portraits/1-1.jpg" },
+  { slug: "andrei-portrait", title: "Andrei", category: "Portrait", description: "Portrait Studio", dark: false, image: "/images/portfolio/portraits/2.jpg" },
+  { slug: "katarina-boudoir", title: "Katarina", category: "Boudoir", description: "Portrait Studio", dark: true, image: "/images/portfolio/boudoir/1-scaled.jpg" },
+  { slug: "tu-wien-event", title: "TU Wien", category: "Event", description: "i2ncubator", dark: true, image: "/images/portfolio/events/tu-wien/tu-wien-event-01.jpg" },
+  { slug: "autonom-health", title: "Produktfotos", category: "Produkt", description: "Produktfotografie", dark: false, image: "/images/portfolio/products/DSC_0007-1.jpg" },
+  { slug: "gerstner-food", title: "Gerstner", category: "Food", description: "Kulinarik", dark: true, image: "/images/portfolio/food/DSC_8186.jpg" },
 ];
 
 // ============================================
@@ -435,8 +673,10 @@ function MainContent() {
 
   return (
     <main className={`relative transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+      <Header />
       <ScrollProgress />
-      <ThemeToggle />
+      <WhatsAppButton />
+      <CookieConsent />
 
       {/* ========== HERO ========== */}
       <section className={`relative min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
@@ -509,36 +749,59 @@ function MainContent() {
 
       {/* ========== CLIENTS ========== */}
       <Section background={<GoldenSpiralBg />}>
-        <div className="py-32">
+        <div className="py-24 md:py-32">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
-              <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2, type: "spring" }} className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${g.card}`}>
-                <i className={`fa-solid fa-handshake text-2xl transition-colors duration-700 ${g.icon}`} />
-              </motion.div>
-              <h2 className={`text-3xl md:text-4xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Vertrauen von führenden Unternehmen</h2>
-              <p className={`max-w-xl mx-auto transition-colors duration-700 ${g.textSub}`}>Stolze Zusammenarbeit mit renommierten Institutionen und Marken aus Wien</p>
+            {/* Header */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <p className={`text-xs uppercase tracking-[0.3em] mb-4 transition-colors duration-700 ${g.textMuted}`}>Vertrauen von</p>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Führenden Unternehmen</h2>
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 max-w-5xl mx-auto">
-              {clients.map((c, i) => (
-                <motion.div key={c.name} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i*0.1 }} className="group">
-                  <div className={`p-6 md:p-8 rounded-2xl text-center h-full flex flex-col items-center justify-center gap-4 transition-all duration-500 group-hover:scale-[1.02] ${g.card} ${g.cardHover}`}>
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${g.iconBg} ${g.iconBgHover}`}>
-                      <i className={`${c.icon} text-xl transition-colors duration-500 ${g.icon} ${g.iconHover}`} />
+            {/* Infinite Marquee */}
+            <div className="relative overflow-hidden py-8">
+              {/* Fade edges */}
+              <div className={`absolute left-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
+              <div className={`absolute right-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
+
+              {/* Scrolling container */}
+              <motion.div
+                className="flex gap-16 md:gap-24"
+                animate={{ x: [0, -1400] }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              >
+                {/* First set */}
+                {[...clients, ...clients].map((c, i) => (
+                  <div key={`${c.name}-${i}`} className="flex-shrink-0 group cursor-pointer">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="w-[140px] md:w-[180px] h-20 md:h-24 flex items-center justify-center">
+                        <img
+                          src={c.logo}
+                          alt={`${c.name} Logo`}
+                          style={{ transform: `scale(${c.scale || 1})` }}
+                          className={`max-h-14 md:max-h-[70px] max-w-full object-contain transition-all duration-500 ${
+                            theme === 'dark'
+                              ? 'brightness-0 invert opacity-50 group-hover:opacity-100'
+                              : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100'
+                          }`}
+                        />
+                      </div>
                     </div>
-                    <span className={`text-sm md:text-base font-medium transition-colors duration-500 ${g.textSub}`}>{c.name}</span>
                   </div>
-                </motion.div>
-              ))}
+                ))}
+              </motion.div>
             </div>
 
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.6 }} className={`flex flex-wrap justify-center gap-8 md:gap-16 mt-20 pt-12 border-t ${g.divider}`}>
-              {[{ value: "50+", label: "Firmenkunden" }, { value: "500+", label: "Projekte" }, { value: "100%", label: "Zufriedenheit" }].map((s, i) => (
-                <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.7+i*0.1 }} className="text-center">
-                  <p className={`text-3xl md:text-4xl font-semibold mb-1 transition-colors duration-700 ${g.text}`}>{s.value}</p>
-                  <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>{s.label}</p>
-                </motion.div>
-              ))}
+            {/* Stats as elegant text */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="mt-16 text-center"
+            >
+              <p className={`text-lg md:text-xl transition-colors duration-700 ${g.textSub}`}>
+                <span className={`font-semibold ${g.text}`}>50+</span> Firmenkunden · <span className={`font-semibold ${g.text}`}>500+</span> Projekte · <span className={`font-semibold ${g.text}`}>12</span> Jahre Erfahrung
+              </p>
             </motion.div>
           </div>
         </div>
@@ -564,23 +827,110 @@ function MainContent() {
               </div>
             </motion.div>
 
-            <div ref={scrollRef} className="flex gap-5 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+            {/* Draggable Carousel */}
+            <div
+              ref={scrollRef}
+              className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
+              style={{ scrollbarWidth: 'none' }}
+              onMouseDown={(e) => {
+                const el = scrollRef.current;
+                if (!el) return;
+                el.dataset.isDragging = 'true';
+                el.dataset.startX = String(e.pageX - el.offsetLeft);
+                el.dataset.scrollLeft = String(el.scrollLeft);
+                el.style.scrollBehavior = 'auto';
+              }}
+              onMouseMove={(e) => {
+                const el = scrollRef.current;
+                if (!el || el.dataset.isDragging !== 'true') return;
+                e.preventDefault();
+                const x = e.pageX - el.offsetLeft;
+                const walk = (x - Number(el.dataset.startX)) * 1.5;
+                el.scrollLeft = Number(el.dataset.scrollLeft) - walk;
+              }}
+              onMouseUp={() => {
+                const el = scrollRef.current;
+                if (el) {
+                  el.dataset.isDragging = 'false';
+                  el.style.scrollBehavior = 'smooth';
+                }
+              }}
+              onMouseLeave={() => {
+                const el = scrollRef.current;
+                if (el) {
+                  el.dataset.isDragging = 'false';
+                  el.style.scrollBehavior = 'smooth';
+                }
+              }}
+            >
               {featuredProjects.map((p, i) => (
                 <motion.div key={p.slug} initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i*0.1 }} className="flex-shrink-0 snap-start" style={{ width: "340px" }}>
-                  <Link href={`/portfolio/${p.slug}/`} className="group block h-full">
-                    <div className={`relative h-[440px] rounded-3xl p-6 flex flex-col overflow-hidden transition-all duration-500 group-hover:scale-[0.98] ${p.dark ? (theme === 'dark' ? 'bg-white/[0.06]' : 'bg-[#1d1d1f]') : (theme === 'dark' ? 'bg-white/[0.12]' : 'bg-[#f5f5f7]')}`}>
-                      <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                        <i className="fa-solid fa-camera text-8xl" />
+                  <Link href={`/portfolio/${p.slug}/`} className="group block h-full" draggable={false}>
+                    <div className={`relative h-[440px] rounded-3xl overflow-hidden`}>
+                      {/* Background Image */}
+                      <div className="absolute inset-0">
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          draggable={false}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        {/* Gradient overlay */}
+                        <div className={`absolute inset-0 transition-opacity duration-500 ${p.dark ? 'bg-gradient-to-t from-black/80 via-black/20 to-black/30' : 'bg-gradient-to-t from-white/90 via-white/30 to-white/40'}`} />
                       </div>
-                      <div className="relative z-10">
-                        <span className={`inline-block px-3 py-1 text-xs font-medium rounded-full mb-3 ${p.dark ? (theme === 'dark' ? 'bg-white/10 text-white/80' : 'bg-white/20 text-white/80') : (theme === 'dark' ? 'bg-black/20 text-black/80' : 'bg-black/5 text-gray-600')}`}>{p.category}</span>
-                        <h3 className={`text-2xl font-semibold mb-1 tracking-tight ${p.dark ? 'text-white' : (theme === 'dark' ? 'text-gray-900' : 'text-gray-900')}`}>{p.title}</h3>
-                        <p className={`text-sm ${p.dark ? 'text-gray-400' : 'text-gray-500'}`}>{p.description}</p>
+
+                      {/* Camera Focus Overlay - appears on hover */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                        {/* Rule of thirds grid */}
+                        <div className="absolute inset-4">
+                          {/* Vertical lines */}
+                          <div className="absolute left-1/3 top-0 bottom-0 w-px bg-white/30" />
+                          <div className="absolute left-2/3 top-0 bottom-0 w-px bg-white/30" />
+                          {/* Horizontal lines */}
+                          <div className="absolute top-1/3 left-0 right-0 h-px bg-white/30" />
+                          <div className="absolute top-2/3 left-0 right-0 h-px bg-white/30" />
+                        </div>
+
+                        {/* Focus brackets in corners */}
+                        <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-white/70" />
+                        <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-white/70" />
+                        <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-white/70" />
+                        <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-white/70" />
+
+                        {/* Center focus point */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                          {/* Outer ring - animates */}
+                          <motion.div
+                            className="absolute -inset-4 border-2 border-white/50 rounded-sm"
+                            initial={{ scale: 1.5, opacity: 0 }}
+                            whileInView={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                          />
+                          {/* Inner brackets */}
+                          <div className="relative w-8 h-8">
+                            <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-white" />
+                            <div className="absolute top-0 right-0 w-2 h-2 border-r-2 border-t-2 border-white" />
+                            <div className="absolute bottom-0 left-0 w-2 h-2 border-l-2 border-b-2 border-white" />
+                            <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-white" />
+                            {/* Center dot */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white rounded-full" />
+                          </div>
+                        </div>
+
                       </div>
-                      <div className="relative z-10 mt-auto">
-                        <span className={`inline-flex items-center gap-2 text-sm font-medium group-hover:gap-3 transition-all ${p.dark ? 'text-white/70' : 'text-gray-600'}`}>
-                          Projekt ansehen <i className="fa-solid fa-arrow-right text-xs" />
-                        </span>
+
+                      {/* Content */}
+                      <div className="relative z-10 h-full p-6 flex flex-col">
+                        <div>
+                          <span className={`inline-block px-3 py-1 text-xs font-medium rounded-full mb-3 backdrop-blur-sm ${p.dark ? 'bg-white/20 text-white' : 'bg-black/10 text-gray-800'}`}>{p.category}</span>
+                        </div>
+                        <div className="mt-auto">
+                          <h3 className={`text-2xl font-semibold mb-1 tracking-tight ${p.dark ? 'text-white' : 'text-gray-900'}`}>{p.title}</h3>
+                          <p className={`text-sm mb-4 ${p.dark ? 'text-gray-300' : 'text-gray-600'}`}>{p.description}</p>
+                          <span className={`inline-flex items-center gap-2 text-sm font-medium group-hover:gap-3 transition-all ${p.dark ? 'text-white/90' : 'text-gray-700'}`}>
+                            Projekt ansehen <i className="fa-solid fa-arrow-right text-xs" />
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </Link>
