@@ -29,6 +29,8 @@ After EVERY work session or significant progress, Claude MUST:
 | 2026-02-01 | Phase 2 | Scroll transition test pages (sticky overlap + scale + parallax + DoF) | Completed |
 | 2026-02-03 | Phase 2 | New homepage with dark/light mode, photography backgrounds, no scroll overlap | Completed |
 | 2026-02-03 | Docs | Created TASKS-UIUX.md with 70+ improvement tasks organized by priority | Completed |
+| 2026-02-04 | Phase 2 | Homepage UI/UX: sticky header, WhatsApp button, cookie consent, camera focus hover, drag carousel | Completed |
+| 2026-02-04 | Assets | Added real client logos: Thales, TU Wien, Gourmet, Gerstner, AIM Group, First Event, Autonom Health | Completed |
 
 **GitHub:** https://github.com/StrikeLike/Website-Foto-in-Wien
 
@@ -37,8 +39,8 @@ After EVERY work session or significant progress, Claude MUST:
 ## PROJECT OVERVIEW
 
 **Owner:** Alexandru Bogdan - WELO MEDIA STUDIOS S.R.L.
-- 20+ years SEO expertise, WordPress developer, Professional photographer in Vienna
-- Clients: TU Wien, Autonom Health, V-Suit, Gerstner, Hope for the Future
+- 12+ years photography experience, SEO expertise, WordPress developer
+- Clients: Thales, TU Wien, Gourmet, Gerstner, AIM Group, First Event, Autonom Health
 
 **Business Goals:**
 1. Generate qualified leads from Vienna corporate market
