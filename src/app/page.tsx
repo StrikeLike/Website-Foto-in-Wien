@@ -683,7 +683,7 @@ function MainContent() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src="/images/hero/hero-main.jpg"
+            src="/images/hero/hero-studio-scene.jpg"
             alt="Professionelle Fotografie in Wien"
             className="w-full h-full object-cover"
           />
