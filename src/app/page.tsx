@@ -681,11 +681,12 @@ function MainContent() {
       {/* ========== HERO ========== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 flex items-center justify-center">
           <img
             src="/images/hero/hero-studio-scene.jpg"
             alt="Professionelle Fotografie in Wien"
-            className="w-full h-full object-cover"
+            className="min-w-full min-h-full object-cover"
+            style={{ objectPosition: '50% 35%' }}
           />
           {/* Overlay gradient */}
           <div className={`absolute inset-0 transition-colors duration-700 ${
