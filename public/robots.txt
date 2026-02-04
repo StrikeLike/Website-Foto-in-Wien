@@ -1,0 +1,12 @@
+# robots.txt for fotoinwien.at
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.fotoinwien.at/sitemap.xml
+
+# Disallow admin and private paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/

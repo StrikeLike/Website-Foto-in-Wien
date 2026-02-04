@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s | Foto in Wien",
   },
   description:
-    "Professioneller Fotograf in Wien für Business, Event, Portrait und Produktfotografie. 20+ Jahre Erfahrung. Kunden: TU Wien, Autonom Health, Gerstner.",
+    "Professioneller Fotograf in Wien für Business, Event, Portrait und Produktfotografie. 12+ Jahre Erfahrung. Kunden: TU Wien, Autonom Health, Gerstner.",
   keywords: [
     "Fotograf Wien",
     "Business Fotografie Wien",
@@ -70,6 +70,77 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://www.fotoinwien.at/#business",
+      "name": "Foto in Wien - Alexandru Bogdan",
+      "image": "https://www.fotoinwien.at/images/hero/hero-studio-scene.jpg",
+      "description": "Professioneller Fotograf in Wien für Business, Event, Portrait und Produktfotografie.",
+      "url": "https://www.fotoinwien.at",
+      "telephone": "+43-660-845-9895",
+      "email": "info@fotoinwien.at",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Wien",
+        "addressCountry": "AT"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 48.2082,
+        "longitude": 16.3738
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ],
+      "priceRange": "€€",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "reviewCount": "50"
+      }
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://www.fotoinwien.at/#service",
+      "name": "Foto in Wien - Professionelle Fotografie",
+      "serviceType": "Photography",
+      "provider": { "@id": "https://www.fotoinwien.at/#business" },
+      "areaServed": {
+        "@type": "City",
+        "name": "Wien"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Fotografie Dienstleistungen",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Businessfotografie" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Eventfotografie" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Portraitfotografie" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Produktfotografie" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Food Fotografie" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Familienfotografie" } }
+        ]
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.fotoinwien.at/#person",
+      "name": "Alexandru Bogdan",
+      "jobTitle": "Professioneller Fotograf",
+      "worksFor": { "@id": "https://www.fotoinwien.at/#business" },
+      "knowsAbout": ["Business Fotografie", "Event Fotografie", "Portrait Fotografie", "Produkt Fotografie"]
+    }
+  ]
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -77,6 +148,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${jost.variable} font-sans antialiased`}>
         {children}
       </body>
