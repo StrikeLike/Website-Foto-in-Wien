@@ -31,6 +31,9 @@ After EVERY work session or significant progress, Claude MUST:
 | 2026-02-03 | Docs | Created TASKS-UIUX.md with 70+ improvement tasks organized by priority | Completed |
 | 2026-02-04 | Phase 2 | Homepage UI/UX: sticky header, WhatsApp button, cookie consent, camera focus hover, drag carousel | Completed |
 | 2026-02-04 | Assets | Added real client logos: Thales, TU Wien, Gourmet, Gerstner, AIM Group, First Event, Autonom Health | Completed |
+| 2026-02-05 | Phase 2 | Hero image updated to studio scene, SVG logo in header/footer, back-to-top button | Completed |
+| 2026-02-05 | Phase 2 | CTA urgency badge, footer business hours, social media links | Completed |
+| 2026-02-05 | SEO | JSON-LD schema, robots.txt, sitemap.xml, meta description fix | Completed |
 
 **GitHub:** https://github.com/StrikeLike/Website-Foto-in-Wien
 
