@@ -86,14 +86,15 @@ function Header() {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="relative z-10">
-              <motion.span
-                className={`text-xl md:text-2xl font-bold tracking-tight transition-colors duration-500 ${
-                  isDark ? 'text-white' : 'text-[#0a0a0a]'
-                }`}
-                whileHover={{ scale: 1.02 }}
-              >
-                Foto in Wien
-              </motion.span>
+              <motion.div whileHover={{ scale: 1.02 }}>
+                <img
+                  src="/images/logos/fotograf-wien-logo.svg"
+                  alt="Foto in Wien"
+                  className={`h-10 md:h-12 w-auto transition-all duration-500 ${
+                    isDark ? '' : 'invert'
+                  }`}
+                />
+              </motion.div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -226,6 +227,45 @@ function WhatsAppButton() {
     >
       <i className="fa-brands fa-whatsapp text-2xl" />
     </motion.a>
+  );
+}
+
+// ============================================
+// BACK TO TOP BUTTON
+// ============================================
+function BackToTop() {
+  const { theme } = useTheme();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setVisible(window.scrollY > 500);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0, opacity: 0 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={scrollToTop}
+          className={`fixed bottom-6 left-6 z-[180] w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-colors duration-300 ${
+            theme === 'dark'
+              ? 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'
+              : 'bg-black/5 text-gray-700 hover:bg-black/10 backdrop-blur-sm'
+          }`}
+          aria-label="Nach oben scrollen"
+        >
+          <i className="fa-solid fa-arrow-up" />
+        </motion.button>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -676,6 +716,7 @@ function MainContent() {
       <Header />
       <ScrollProgress />
       <WhatsAppButton />
+      <BackToTop />
       <CookieConsent />
 
       {/* ========== HERO ========== */}
@@ -1132,6 +1173,13 @@ function MainContent() {
                   <div className={`w-20 h-20 mx-auto rounded-2xl flex items-center justify-center ${g.iconBg}`}>
                     <i className={`fa-solid fa-camera text-3xl transition-colors duration-700 ${g.icon}`} />
                   </div>
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-green-500/20 text-green-400' : 'bg-green-500/10 text-green-600'}`}>
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    Termine verfügbar im Februar
+                  </div>
                   <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Bereit für Ihr Fotoshooting?</h2>
                   <p className={`text-xl max-w-2xl mx-auto transition-colors duration-700 ${g.textSub}`}>Lassen Sie uns gemeinsam Ihre Vision verwirklichen. Kontaktieren Sie mich für ein unverbindliches Beratungsgespräch.</p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -1162,7 +1210,11 @@ function MainContent() {
         <div className="relative z-10 container mx-auto px-4 md:px-8 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <div>
-              <h3 className={`text-2xl font-bold mb-4 transition-colors duration-700 ${g.text}`}>Foto in Wien</h3>
+              <img
+                src="/images/logos/fotograf-wien-logo.svg"
+                alt="Foto in Wien"
+                className={`h-10 w-auto mb-4 transition-all duration-500 ${theme === 'dark' ? '' : 'invert'}`}
+              />
               <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>Eventfotografie, Porträtfotografie, Businessfotografie, und Produktfotografie in Wien.</p>
             </div>
             {[
@@ -1179,14 +1231,20 @@ function MainContent() {
             <div>
               <h4 className={`font-semibold mb-4 transition-colors duration-700 ${g.text}`}>Kontakt</h4>
               <ul className={`space-y-2 text-sm transition-colors duration-700 ${g.textMuted}`}>
-                <li>Wien, Österreich</li>
-                <li>info@fotoinwien.at</li>
-                <li>+43 660-845-9895</li>
+                <li className="flex items-center gap-2"><i className="fa-solid fa-location-dot w-4" /> Wien, Österreich</li>
+                <li className="flex items-center gap-2"><i className="fa-solid fa-envelope w-4" /> info@fotoinwien.at</li>
+                <li className="flex items-center gap-2"><i className="fa-solid fa-phone w-4" /> +43 660-845-9895</li>
+                <li className="flex items-center gap-2 mt-3"><i className="fa-solid fa-clock w-4" /> Mo-Fr: 09:00 - 18:00</li>
+                <li className="flex items-center gap-2"><i className="fa-solid fa-calendar w-4" /> Sa: Nach Vereinbarung</li>
               </ul>
               <div className="flex gap-4 mt-4">
-                {['instagram', 'facebook', 'whatsapp'].map(s => (
-                  <a key={s} href={s === 'whatsapp' ? 'https://wa.me/436608459895' : '#'} className={`transition-colors ${g.textMuted}`}>
-                    <i className={`fa-brands fa-${s} text-xl`} />
+                {[
+                  { icon: 'instagram', href: 'https://www.instagram.com/fotoinwien/' },
+                  { icon: 'facebook', href: 'https://www.facebook.com/fotoinwien/' },
+                  { icon: 'whatsapp', href: 'https://wa.me/436608459895' }
+                ].map(s => (
+                  <a key={s.icon} href={s.href} target="_blank" rel="noopener noreferrer" className={`transition-colors hover:opacity-70 ${g.textMuted}`}>
+                    <i className={`fa-brands fa-${s.icon} text-xl`} />
                   </a>
                 ))}
               </div>
