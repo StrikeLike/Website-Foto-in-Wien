@@ -46,7 +46,7 @@ function MouseProvider({ children }: { children: ReactNode }) {
 const useMouse = () => useContext(MouseContext);
 
 // ============================================
-// STICKY HEADER
+// STICKY HEADER WITH PHONE
 // ============================================
 function Header() {
   const { theme, toggleTheme } = useTheme();
@@ -61,7 +61,6 @@ function Header() {
   }, []);
 
   const navLinks = [
-    { label: 'Startseite', href: '/' },
     { label: 'Portfolio', href: '/portfolio/' },
     { label: 'Leistungen', href: '/leistungen/' },
     { label: 'Preise', href: '/preise/' },
@@ -112,8 +111,21 @@ function Header() {
               ))}
             </nav>
 
-            {/* Right side: Theme toggle + Mobile menu button */}
+            {/* Right side */}
             <div className="flex items-center gap-4">
+              {/* Phone - Desktop */}
+              <a
+                href="tel:+436608459895"
+                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  isDark
+                    ? 'bg-white/10 text-white hover:bg-white/20'
+                    : 'bg-black/5 text-gray-700 hover:bg-black/10'
+                }`}
+              >
+                <i className="fa-solid fa-phone text-xs" />
+                +43 660 845 9895
+              </a>
+
               {/* Theme Toggle */}
               <motion.button
                 onClick={toggleTheme}
@@ -186,6 +198,16 @@ function Header() {
                   </Link>
                 </motion.div>
               ))}
+              <motion.a
+                href="tel:+436608459895"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+                className={`mt-4 flex items-center gap-2 text-lg ${isDark ? 'text-white/70' : 'text-gray-600'}`}
+              >
+                <i className="fa-solid fa-phone" />
+                +43 660 845 9895
+              </motion.a>
             </div>
           </motion.div>
         )}
@@ -198,7 +220,6 @@ function Header() {
 // FLOATING WHATSAPP BUTTON
 // ============================================
 function WhatsAppButton() {
-  const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -218,11 +239,7 @@ function WhatsAppButton() {
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className={`fixed bottom-6 right-6 z-[180] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-colors duration-300 ${
-        theme === 'dark'
-          ? 'bg-[#25D366] text-white hover:bg-[#20BD5A]'
-          : 'bg-[#25D366] text-white hover:bg-[#20BD5A]'
-      }`}
+      className="fixed bottom-6 right-6 z-[180] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl bg-[#25D366] text-white hover:bg-[#20BD5A]"
       aria-label="WhatsApp kontaktieren"
     >
       <i className="fa-brands fa-whatsapp text-2xl" />
@@ -355,7 +372,7 @@ function CookieConsent() {
 }
 
 // ============================================
-// ADAPTIVE BACKGROUNDS
+// ADAPTIVE BACKGROUNDS (from original)
 // ============================================
 
 function ViewfinderBg() {
@@ -467,7 +484,6 @@ function GoldenSpiralBg() {
   const glow = d ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
   const glowStrong = d ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
 
-  // Fibonacci rectangles
   const fibRects = [
     { w: 61.8, h: 61.8, x: 38.2, y: 0 },
     { w: 38.2, h: 38.2, x: 0, y: 0 },
@@ -475,7 +491,6 @@ function GoldenSpiralBg() {
     { w: 14.6, h: 14.6, x: 23.6, y: 38.2 },
   ];
 
-  // Golden ratio points
   const goldenPoints = [
     { x: 38.2, y: 38.2 },
     { x: 61.8, y: 38.2 },
@@ -485,7 +500,6 @@ function GoldenSpiralBg() {
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Static Fibonacci rectangles - no animation, just mouse parallax */}
       {fibRects.map((r, i) => (
         <motion.div
           key={`rect-${i}`}
@@ -501,7 +515,6 @@ function GoldenSpiralBg() {
         />
       ))}
 
-      {/* Golden ratio intersection points with pulsing rings */}
       {goldenPoints.map((p, i) => (
         <motion.div
           key={`point-${i}`}
@@ -513,19 +526,16 @@ function GoldenSpiralBg() {
             y: mouse.normalizedY * 18
           }}
         >
-          {/* Outer pulse ring */}
           <motion.div
             className={`absolute w-8 h-8 rounded-full border ${borderLight} -translate-x-1/2 -translate-y-1/2`}
             animate={{ scale: [1, 1.6, 1], opacity: [0.3, 0, 0.3] }}
             transition={{ duration: 4, delay: i * 0.8, repeat: Infinity, ease: "easeOut" }}
           />
-          {/* Inner ring */}
           <motion.div
             className={`absolute w-4 h-4 rounded-full border ${border} -translate-x-1/2 -translate-y-1/2`}
             animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.5, 0.2] }}
             transition={{ duration: 3, delay: i * 0.5, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* Center dot */}
           <motion.div
             className={`absolute w-1.5 h-1.5 rounded-full ${dot} -translate-x-1/2 -translate-y-1/2`}
             animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
@@ -534,7 +544,6 @@ function GoldenSpiralBg() {
         </motion.div>
       ))}
 
-      {/* Animated glow orbs at golden positions */}
       <motion.div
         className="absolute rounded-full pointer-events-none"
         style={{
@@ -561,21 +570,7 @@ function GoldenSpiralBg() {
         animate={{ scale: [1.1, 0.95, 1.1], opacity: [0.4, 0.6, 0.4] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       />
-      <motion.div
-        className="absolute rounded-full pointer-events-none"
-        style={{
-          width: 220, height: 220,
-          left: '23.6%', top: '61.8%',
-          transform: 'translate(-50%, -50%)',
-          background: `radial-gradient(circle, ${glow} 0%, transparent 70%)`,
-          x: mouse.normalizedX * 12,
-          y: mouse.normalizedY * 12
-        }}
-        animate={{ scale: [0.95, 1.1, 0.95] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-      />
 
-      {/* Floating particles */}
       {[...Array(6)].map((_, i) => {
         const positions = [
           { x: 30, y: 25 }, { x: 70, y: 30 }, { x: 45, y: 55 },
@@ -612,12 +607,12 @@ function GoldenSpiralBg() {
 // DATA
 // ============================================
 const services = [
-  { icon: "fa-solid fa-calendar-days", title: "Eventfotografie", description: "Eventfotograf in Wien für Firmenveranstaltungen, Konferenzen und Galas. Professionelle Dokumentation.", href: "/leistungen/eventfotografie/", price: "Ab €400", image: "/images/portfolio/events/tu-wien/tu-wien-event-01.jpg", popular: true },
-  { icon: "fa-solid fa-briefcase", title: "Businessfotografie", description: "Business Portraits und Mitarbeiterfotos in Wien. Professionelle Bilder für LinkedIn, Website und Marketing.", href: "/leistungen/businessfotografie/", price: "Ab €100", image: "/images/portfolio/portraits/DSC_3017.jpg" },
-  { icon: "fa-solid fa-user", title: "Portraitfotografie", description: "Professionelle Porträtfotos in Wien. Authentische Aufnahmen im Studio oder an Outdoor-Locations.", href: "/leistungen/portraitfotografie/", price: "Ab €150", image: "/images/portfolio/portraits/1-1.jpg" },
-  { icon: "fa-solid fa-box", title: "Produktfotografie", description: "Produktfotos für E-Commerce und Kataloge in Wien. Freisteller und Lifestyle-Aufnahmen.", href: "/leistungen/produktfotografie/", price: "Ab €25", image: "/images/portfolio/products/DSC_0007-1.jpg" },
+  { icon: "fa-solid fa-user", title: "Portraitfotografie", description: "Professionelle Porträtfotos in Wien. Authentische Aufnahmen im Studio oder an Outdoor-Locations.", href: "/leistungen/portraitfotografie/", price: "Ab 150", image: "/images/portfolio/portraits/1-1.jpg" },
+  { icon: "fa-solid fa-briefcase", title: "Businessfotografie", description: "Business Portraits und Mitarbeiterfotos in Wien. Professionelle Bilder für LinkedIn, Website und Marketing.", href: "/leistungen/businessfotografie/", price: "Ab 100", image: "/images/portfolio/portraits/DSC_3017.jpg", popular: true },
+  { icon: "fa-solid fa-calendar-days", title: "Eventfotografie", description: "Eventfotograf in Wien für Firmenveranstaltungen, Konferenzen und Galas. Professionelle Dokumentation.", href: "/leistungen/eventfotografie/", price: "Ab 400", image: "/images/portfolio/events/tu-wien/tu-wien-event-01.jpg" },
+  { icon: "fa-solid fa-box", title: "Produktfotografie", description: "Produktfotos für E-Commerce und Kataloge in Wien. Freisteller und Lifestyle-Aufnahmen.", href: "/leistungen/produktfotografie/", price: "Ab 25/Stk", image: "/images/portfolio/products/DSC_0007-1.jpg" },
   { icon: "fa-solid fa-utensils", title: "Foodfotografie", description: "Food Fotografie in Wien für Restaurants, Hotels und Social Media. Appetitliche Aufnahmen.", href: "/leistungen/foodfotografie/", price: "Auf Anfrage", image: "/images/portfolio/food/DSC_8186.jpg" },
-  { icon: "fa-solid fa-people-roof", title: "Familienfotografie", description: "Familienfotograf in Wien. Natürliche Familienfotos im Studio oder Outdoor in Wien.", href: "/leistungen/familienfotografie/", price: "Ab €200", image: "/images/portfolio/family/DSC_0987-1.jpg" },
+  { icon: "fa-solid fa-people-roof", title: "Familienfotografie", description: "Familienfotograf in Wien. Natürliche Familienfotos im Studio oder Outdoor in Wien.", href: "/leistungen/familienfotografie/", price: "Ab 200", image: "/images/portfolio/family/DSC_0987-1.jpg" },
 ];
 
 const clients = [
@@ -644,6 +639,13 @@ const featuredProjects = [
   { slug: "tu-wien-event", title: "TU Wien", category: "Event", description: "i2ncubator", dark: true, image: "/images/portfolio/events/tu-wien/tu-wien-event-01.jpg" },
   { slug: "autonom-health", title: "Produktfotos", category: "Produkt", description: "Produktfotografie", dark: false, image: "/images/portfolio/products/DSC_0007-1.jpg" },
   { slug: "gerstner-food", title: "Gerstner", category: "Food", description: "Kulinarik", dark: true, image: "/images/portfolio/food/DSC_8186.jpg" },
+];
+
+const faqItems = [
+  { question: "Was kostet ein Fotoshooting?", answer: "Die Preise variieren je nach Art des Shootings. Business Portraits starten ab 100, Eventfotografie ab 400, Produktfotos ab 25/Produkt. Kontaktieren Sie mich für ein individuelles Angebot." },
+  { question: "Wie lange dauert es bis ich die Bilder bekomme?", answer: "Standardlieferung innerhalb von 5-7 Werktagen. Express-Lieferung in 48h ist gegen Aufpreis möglich." },
+  { question: "Kann ich die Bilder kommerziell nutzen?", answer: "Ja, alle Business- und Produktfotos beinhalten eine kommerzielle Nutzungslizenz. Die genauen Nutzungsrechte werden im Vertrag festgehalten." },
+  { question: "Was passiert wenn mir die Bilder nicht gefallen?", answer: "Ich biete eine Zufriedenheitsgarantie. Sollten Sie nicht zufrieden sein, gibt es eine kostenlose Nachbearbeitung oder Neuaufnahme der Bilder." },
 ];
 
 // ============================================
@@ -701,6 +703,7 @@ function MainContent() {
   const g = useGlass();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -729,7 +732,6 @@ function MainContent() {
             className="min-w-full min-h-full object-cover"
             style={{ objectPosition: '50% 35%' }}
           />
-          {/* Overlay gradient */}
           <div className={`absolute inset-0 transition-colors duration-700 ${
             theme === 'dark'
               ? 'bg-gradient-to-b from-black/70 via-black/50 to-black/80'
@@ -760,45 +762,88 @@ function MainContent() {
             FOTOGRAF
           </motion.h1>
           <motion.p
-            className={`text-xl md:text-2xl mb-12 ${theme === 'dark' ? 'text-white/80' : 'text-gray-600'}`}
+            className={`text-xl md:text-2xl mb-8 ${theme === 'dark' ? 'text-white/80' : 'text-gray-600'}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
           >
             Alexandru Bogdan - Wien
           </motion.p>
+
+          {/* NEW: Trust Badges */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+            className={`flex flex-wrap justify-center gap-4 md:gap-6 mb-10 text-sm ${theme === 'dark' ? 'text-white/70' : 'text-gray-600'}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+          >
+            <span className="flex items-center gap-2">
+              <i className="fa-solid fa-star text-yellow-400" />
+              <span className="font-semibold">5.0</span> Google
+            </span>
+            <span className="flex items-center gap-2">
+              <i className="fa-solid fa-camera" />
+              <span className="font-semibold">500+</span> Projekte
+            </span>
+            <span className="flex items-center gap-2">
+              <i className="fa-solid fa-check-circle text-green-400" />
+              Zufriedenheitsgarantie
+            </span>
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
             <Link
-              href="/portfolio/"
+              href="/kontakt/"
               className={`px-8 py-4 font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 ${
                 theme === 'dark'
                   ? 'bg-white text-black hover:bg-white/90'
                   : 'bg-black text-white hover:bg-black/90'
               }`}
             >
-              Portfolio ansehen <i className="fa-solid fa-arrow-right" />
+              <i className="fa-solid fa-paper-plane" />
+              Kostenlos beraten lassen
             </Link>
             <Link
-              href="/kontakt/"
-              className={`px-8 py-4 border font-semibold rounded-full transition-all ${
+              href="/portfolio/"
+              className={`px-8 py-4 border font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 ${
                 theme === 'dark'
                   ? 'border-white/50 text-white hover:bg-white/10'
                   : 'border-black/50 text-gray-900 hover:bg-black/10'
               }`}
             >
-              Kontakt aufnehmen
+              Portfolio ansehen <i className="fa-solid fa-arrow-right" />
             </Link>
           </motion.div>
+
+          {/* NEW: Urgency Badge */}
           <motion.div
-            className="flex flex-col items-center gap-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.2 }}
+            transition={{ duration: 0.8, delay: 1.1 }}
+          >
+            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm ${
+              theme === 'dark'
+                ? 'bg-green-500/20 text-green-400'
+                : 'bg-green-500/10 text-green-600'
+            }`}>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              Termine verfügbar im Februar
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col items-center gap-3 mt-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.3 }}
           >
             <motion.div
               className={`w-8 h-14 border-2 rounded-full flex justify-center pt-3 ${theme === 'dark' ? 'border-white/30' : 'border-black/30'}`}
@@ -815,8 +860,90 @@ function MainContent() {
         </div>
       </section>
 
-      {/* ========== SERVICES ========== */}
+      {/* ========== CLIENTS (Social Proof) ========== */}
+      <Section background={<GoldenSpiralBg />}>
+        <div className="py-16 md:py-20">
+          <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10">
+              <p className={`text-xs uppercase tracking-[0.3em] transition-colors duration-700 ${g.textMuted}`}>Vertrauen von führenden Unternehmen</p>
+            </motion.div>
+
+            {/* Infinite Marquee */}
+            <div className="relative overflow-hidden py-4">
+              <div className={`absolute left-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
+              <div className={`absolute right-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
+
+              <motion.div
+                className="flex gap-16 md:gap-24"
+                animate={{ x: [0, -1400] }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              >
+                {[...clients, ...clients].map((c, i) => (
+                  <div key={`${c.name}-${i}`} className="flex-shrink-0 group cursor-pointer">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="w-[140px] md:w-[180px] h-16 md:h-20 flex items-center justify-center">
+                        <img
+                          src={c.logo}
+                          alt={`${c.name} Logo`}
+                          style={{ transform: `scale(${c.scale || 1})` }}
+                          className={`max-h-12 md:max-h-[60px] max-w-full object-contain transition-all duration-500 ${
+                            theme === 'dark'
+                              ? 'brightness-0 invert opacity-50 group-hover:opacity-100'
+                              : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100'
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ========== NEW: WIE ES FUNKTIONIERT ========== */}
       <Section background={<ViewfinderBg />}>
+        <div className="py-24">
+          <div className="container mx-auto px-4 md:px-8 max-w-5xl">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>So einfach geht&apos;s</h2>
+              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>In drei Schritten zu Ihren perfekten Fotos</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+              {[
+                { step: 1, title: "Anfrage senden", description: "Kostenlos & unverbindlich. Beschreiben Sie kurz Ihr Projekt und Ihre Wünsche.", icon: "fa-paper-plane" },
+                { step: 2, title: "Beratungsgespräch", description: "Wir besprechen Details, Stil und Ablauf. Persönlich oder per Telefon.", icon: "fa-comments" },
+                { step: 3, title: "Fotoshooting", description: "Entspannte Aufnahmen und schnelle Lieferung Ihrer professionellen Bilder.", icon: "fa-camera" },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15 }}
+                  className="text-center"
+                >
+                  <div className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 ${g.card}`}>
+                    <i className={`fa-solid ${item.icon} text-2xl ${g.icon}`} />
+                    <span className={`absolute -top-3 -right-3 w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center ${
+                      theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                    }`}>
+                      {item.step}
+                    </span>
+                  </div>
+                  <h3 className={`text-xl font-semibold mb-3 ${g.text}`}>{item.title}</h3>
+                  <p className={`${g.textSub}`}>{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ========== SERVICES (with prices) ========== */}
+      <Section background={<FocusFrameBg />}>
         <div className="py-32">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
@@ -824,12 +951,12 @@ function MainContent() {
               <p className={`max-w-2xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Vielseitige Fotografie-Dienstleistungen für Unternehmen und Privatpersonen in Wien.</p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {services.map((s, i) => (
                 <motion.div key={s.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i*0.05 }}>
                   <Link href={s.href} className="group block">
                     <div className={`relative rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${g.card}`}>
-                      <div className="flex flex-row h-[180px]">
+                      <div className="flex flex-row h-[140px]">
                         {/* Content - Left */}
                         <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
                           <div>
@@ -853,7 +980,7 @@ function MainContent() {
                           </div>
                         </div>
                         {/* Image - Right */}
-                        <div className="relative w-[120px] sm:w-[140px] overflow-hidden flex-shrink-0">
+                        <div className="relative w-[140px] sm:w-[160px] overflow-hidden flex-shrink-0">
                           <img
                             src={s.image}
                             alt={s.title}
@@ -870,68 +997,8 @@ function MainContent() {
         </div>
       </Section>
 
-      {/* ========== CLIENTS ========== */}
-      <Section background={<GoldenSpiralBg />}>
-        <div className="py-24 md:py-32">
-          <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-            {/* Header */}
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <p className={`text-xs uppercase tracking-[0.3em] mb-4 transition-colors duration-700 ${g.textMuted}`}>Vertrauen von</p>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Führenden Unternehmen</h2>
-            </motion.div>
-
-            {/* Infinite Marquee */}
-            <div className="relative overflow-hidden py-8">
-              {/* Fade edges */}
-              <div className={`absolute left-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
-              <div className={`absolute right-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
-
-              {/* Scrolling container */}
-              <motion.div
-                className="flex gap-16 md:gap-24"
-                animate={{ x: [0, -1400] }}
-                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              >
-                {/* First set */}
-                {[...clients, ...clients].map((c, i) => (
-                  <div key={`${c.name}-${i}`} className="flex-shrink-0 group cursor-pointer">
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="w-[140px] md:w-[180px] h-20 md:h-24 flex items-center justify-center">
-                        <img
-                          src={c.logo}
-                          alt={`${c.name} Logo`}
-                          style={{ transform: `scale(${c.scale || 1})` }}
-                          className={`max-h-14 md:max-h-[70px] max-w-full object-contain transition-all duration-500 ${
-                            theme === 'dark'
-                              ? 'brightness-0 invert opacity-50 group-hover:opacity-100'
-                              : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100'
-                          }`}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Stats as elegant text */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="mt-16 text-center"
-            >
-              <p className={`text-lg md:text-xl transition-colors duration-700 ${g.textSub}`}>
-                <span className={`font-semibold ${g.text}`}>50+</span> Firmenkunden · <span className={`font-semibold ${g.text}`}>500+</span> Projekte · <span className={`font-semibold ${g.text}`}>12</span> Jahre Erfahrung
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </Section>
-
       {/* ========== PORTFOLIO ========== */}
-      <Section background={<FocusFrameBg />}>
+      <Section background={<SafeZonesBg />}>
         <div className="py-32">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
@@ -998,48 +1065,36 @@ function MainContent() {
                           draggable={false}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        {/* Gradient overlay */}
                         <div className={`absolute inset-0 transition-opacity duration-500 ${p.dark ? 'bg-gradient-to-t from-black/80 via-black/20 to-black/30' : 'bg-gradient-to-t from-white/90 via-white/30 to-white/40'}`} />
                       </div>
 
                       {/* Camera Focus Overlay - appears on hover */}
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        {/* Rule of thirds grid */}
                         <div className="absolute inset-4">
-                          {/* Vertical lines */}
                           <div className="absolute left-1/3 top-0 bottom-0 w-px bg-white/30" />
                           <div className="absolute left-2/3 top-0 bottom-0 w-px bg-white/30" />
-                          {/* Horizontal lines */}
                           <div className="absolute top-1/3 left-0 right-0 h-px bg-white/30" />
                           <div className="absolute top-2/3 left-0 right-0 h-px bg-white/30" />
                         </div>
-
-                        {/* Focus brackets in corners */}
                         <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-white/70" />
                         <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-white/70" />
                         <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-white/70" />
                         <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-white/70" />
-
-                        {/* Center focus point */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                          {/* Outer ring - animates */}
                           <motion.div
                             className="absolute -inset-4 border-2 border-white/50 rounded-sm"
                             initial={{ scale: 1.5, opacity: 0 }}
                             whileInView={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.3 }}
                           />
-                          {/* Inner brackets */}
                           <div className="relative w-8 h-8">
                             <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-white" />
                             <div className="absolute top-0 right-0 w-2 h-2 border-r-2 border-t-2 border-white" />
                             <div className="absolute bottom-0 left-0 w-2 h-2 border-l-2 border-b-2 border-white" />
                             <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-white" />
-                            {/* Center dot */}
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white rounded-full" />
                           </div>
                         </div>
-
                       </div>
 
                       {/* Content */}
@@ -1071,7 +1126,7 @@ function MainContent() {
       </Section>
 
       {/* ========== TESTIMONIALS ========== */}
-      <Section background={<SafeZonesBg />}>
+      <Section background={<GoldenSpiralBg />}>
         <div className="py-32">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
@@ -1108,8 +1163,56 @@ function MainContent() {
         </div>
       </Section>
 
-      {/* ========== ABOUT ========== */}
+      {/* ========== NEW: FAQ ========== */}
       <Section background={<ViewfinderBg />}>
+        <div className="py-24">
+          <div className="container mx-auto px-4 md:px-8 max-w-3xl">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Häufige Fragen</h2>
+              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Antworten auf die wichtigsten Fragen</p>
+            </motion.div>
+
+            <div className="space-y-3">
+              {faqItems.map((faq, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className={`rounded-2xl overflow-hidden ${g.card}`}
+                >
+                  <button
+                    onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
+                    className={`w-full flex items-center justify-between p-6 text-left transition-colors ${g.cardHover}`}
+                  >
+                    <span className={`font-medium pr-4 ${g.text}`}>{faq.question}</span>
+                    <i className={`fa-solid fa-chevron-down transition-transform duration-300 flex-shrink-0 ${g.icon} ${expandedFaq === i ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {expandedFaq === i && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className={`px-6 pb-6 leading-relaxed ${g.textSub}`}>
+                          {faq.answer}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ========== ABOUT ========== */}
+      <Section background={<FocusFrameBg />}>
         <div className="py-32">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center max-w-6xl mx-auto">
@@ -1168,7 +1271,7 @@ function MainContent() {
       </Section>
 
       {/* ========== CTA ========== */}
-      <Section background={<FocusFrameBg />}>
+      <Section background={<GoldenSpiralBg />}>
         <div className="py-32">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-4xl mx-auto">
@@ -1177,27 +1280,31 @@ function MainContent() {
                   <div className={`w-20 h-20 mx-auto rounded-2xl flex items-center justify-center ${g.iconBg}`}>
                     <i className={`fa-solid fa-camera text-3xl transition-colors duration-700 ${g.icon}`} />
                   </div>
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-green-500/20 text-green-400' : 'bg-green-500/10 text-green-600'}`}>
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                    </span>
-                    Termine verfügbar im Februar
-                  </div>
                   <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Bereit für Ihr Fotoshooting?</h2>
                   <p className={`text-xl max-w-2xl mx-auto transition-colors duration-700 ${g.textSub}`}>Lassen Sie uns gemeinsam Ihre Vision verwirklichen. Kontaktieren Sie mich für ein unverbindliches Beratungsgespräch.</p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                    <Link href="/kontakt/" className={`px-8 py-4 font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 ${g.btn}`}>
-                      <i className="fa-solid fa-paper-plane" /> Beratungsgespräch buchen
-                    </Link>
-                    <a href="https://wa.me/436608459895" className={`px-8 py-4 border font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 ${g.btnSec}`}>
+
+                  {/* Contact Methods */}
+                  <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                    <a href="tel:+436608459895" className={`flex items-center gap-2 ${g.text} hover:opacity-70 transition-opacity`}>
+                      <i className="fa-solid fa-phone" /> +43 660 845 9895
+                    </a>
+                    <a href="mailto:info@fotoinwien.at" className={`flex items-center gap-2 ${g.text} hover:opacity-70 transition-opacity`}>
+                      <i className="fa-solid fa-envelope" /> info@fotoinwien.at
+                    </a>
+                    <a href="https://wa.me/436608459895" target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 ${g.text} hover:opacity-70 transition-opacity`}>
                       <i className="fa-brands fa-whatsapp" /> WhatsApp
                     </a>
                   </div>
-                  <div className={`flex flex-wrap justify-center gap-6 pt-6 text-sm transition-colors duration-700 ${g.textMuted}`}>
+
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                    <Link href="/kontakt/" className={`px-8 py-4 font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 ${g.btn}`}>
+                      <i className="fa-solid fa-paper-plane" /> Jetzt kostenlos beraten lassen
+                    </Link>
+                  </div>
+                  <div className={`flex flex-wrap justify-center gap-6 pt-4 text-sm transition-colors duration-700 ${g.textMuted}`}>
                     <span className="flex items-center gap-2"><i className="fa-solid fa-clock" /> Antwort in 24h</span>
-                    <span className="flex items-center gap-2"><i className="fa-solid fa-shield" /> Unverbindlich</span>
-                    <span className="flex items-center gap-2"><i className="fa-solid fa-star" /> 5-Sterne Bewertungen</span>
+                    <span className="flex items-center gap-2"><i className="fa-solid fa-hand-holding-heart" /> Unverbindlich</span>
+                    <span className="flex items-center gap-2"><i className="fa-solid fa-credit-card" /> Keine Anzahlung</span>
                   </div>
                 </motion.div>
               </div>
@@ -1208,7 +1315,7 @@ function MainContent() {
 
       {/* ========== FOOTER ========== */}
       <footer className={`relative py-20 overflow-hidden transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
-        <GoldenSpiralBg />
+        <ViewfinderBg />
         <div className={`absolute inset-0 transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]/90' : 'bg-white/90'}`} />
 
         <div className="relative z-10 container mx-auto px-4 md:px-8 max-w-7xl">
@@ -1270,7 +1377,7 @@ function MainContent() {
 // ============================================
 // EXPORT
 // ============================================
-export default function Home() {
+export default function TestHomeV5() {
   return (
     <ThemeProvider>
       <MouseProvider>
