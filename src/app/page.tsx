@@ -724,7 +724,7 @@ function MainContent() {
         {/* Background Image */}
         <div className="absolute inset-0 flex items-center justify-center">
           <img
-            src="/images/hero/hero-studio-scene.jpg"
+            src="/images/hero/fotograf-wien-hero.jpg"
             alt="Professionelle Fotografie in Wien"
             className="min-w-full min-h-full object-cover"
             style={{ objectPosition: '50% 35%' }}
