@@ -34,6 +34,7 @@ After EVERY work session or significant progress, Claude MUST:
 | 2026-02-05 | Phase 2 | Hero image updated to studio scene, SVG logo in header/footer, back-to-top button | Completed |
 | 2026-02-05 | Phase 2 | CTA urgency badge, footer business hours, social media links | Completed |
 | 2026-02-05 | SEO | JSON-LD schema, robots.txt, sitemap.xml, meta description fix | Completed |
+| 2026-02-05 | Phase 2 | Test pages v4/v5 for conversion optimization, services cards redesign (compact 3-col), Eventfotografie as primary service | Completed |
 
 **GitHub:** https://github.com/StrikeLike/Website-Foto-in-Wien
 
