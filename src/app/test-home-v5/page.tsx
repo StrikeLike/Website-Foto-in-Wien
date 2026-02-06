@@ -607,9 +607,9 @@ function GoldenSpiralBg() {
 // DATA
 // ============================================
 const services = [
+  { icon: "fa-solid fa-calendar-days", title: "Eventfotografie", description: "Eventfotograf in Wien für Firmenveranstaltungen, Konferenzen und Galas. Professionelle Dokumentation.", href: "/leistungen/eventfotografie/", price: "Ab 400", image: "/images/portfolio/events/tu-wien/tu-wien-event-01.jpg", popular: true },
+  { icon: "fa-solid fa-briefcase", title: "Businessfotografie", description: "Business Portraits und Mitarbeiterfotos in Wien. Professionelle Bilder für LinkedIn, Website und Marketing.", href: "/leistungen/businessfotografie/", price: "Ab 100", image: "/images/portfolio/portraits/DSC_3017.jpg" },
   { icon: "fa-solid fa-user", title: "Portraitfotografie", description: "Professionelle Porträtfotos in Wien. Authentische Aufnahmen im Studio oder an Outdoor-Locations.", href: "/leistungen/portraitfotografie/", price: "Ab 150", image: "/images/portfolio/portraits/1-1.jpg" },
-  { icon: "fa-solid fa-briefcase", title: "Businessfotografie", description: "Business Portraits und Mitarbeiterfotos in Wien. Professionelle Bilder für LinkedIn, Website und Marketing.", href: "/leistungen/businessfotografie/", price: "Ab 100", image: "/images/portfolio/portraits/DSC_3017.jpg", popular: true },
-  { icon: "fa-solid fa-calendar-days", title: "Eventfotografie", description: "Eventfotograf in Wien für Firmenveranstaltungen, Konferenzen und Galas. Professionelle Dokumentation.", href: "/leistungen/eventfotografie/", price: "Ab 400", image: "/images/portfolio/events/tu-wien/tu-wien-event-01.jpg" },
   { icon: "fa-solid fa-box", title: "Produktfotografie", description: "Produktfotos für E-Commerce und Kataloge in Wien. Freisteller und Lifestyle-Aufnahmen.", href: "/leistungen/produktfotografie/", price: "Ab 25/Stk", image: "/images/portfolio/products/DSC_0007-1.jpg" },
   { icon: "fa-solid fa-utensils", title: "Foodfotografie", description: "Food Fotografie in Wien für Restaurants, Hotels und Social Media. Appetitliche Aufnahmen.", href: "/leistungen/foodfotografie/", price: "Auf Anfrage", image: "/images/portfolio/food/DSC_8186.jpg" },
   { icon: "fa-solid fa-people-roof", title: "Familienfotografie", description: "Familienfotograf in Wien. Natürliche Familienfotos im Studio oder Outdoor in Wien.", href: "/leistungen/familienfotografie/", price: "Ab 200", image: "/images/portfolio/family/DSC_0987-1.jpg" },
@@ -754,12 +754,12 @@ function MainContent() {
             Professionelle Fotografie in Wien
           </motion.p>
           <motion.h1
-            className={`text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
+            className={`text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
             initial={{ opacity: 0, y: 40, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            FOTOGRAF
+            Ihr Fotograf in Wien
           </motion.h1>
           <motion.p
             className={`text-xl md:text-2xl mb-8 ${theme === 'dark' ? 'text-white/80' : 'text-gray-600'}`}
@@ -767,7 +767,7 @@ function MainContent() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
           >
-            Alexandru Bogdan - Wien
+            Business · Event · Portrait · Produkt Fotografie seit 2012
           </motion.p>
 
           {/* NEW: Trust Badges */}
@@ -778,7 +778,7 @@ function MainContent() {
             transition={{ duration: 0.8, delay: 0.9 }}
           >
             <span className="flex items-center gap-2">
-              <i className="fa-solid fa-star text-yellow-400" />
+              <i className={`fa-solid fa-star ${theme === 'dark' ? 'text-white' : 'text-black'}`} />
               <span className="font-semibold">5.0</span> Google
             </span>
             <span className="flex items-center gap-2">
@@ -786,7 +786,7 @@ function MainContent() {
               <span className="font-semibold">500+</span> Projekte
             </span>
             <span className="flex items-center gap-2">
-              <i className="fa-solid fa-check-circle text-green-400" />
+              <i className={`fa-solid fa-check-circle ${theme === 'dark' ? 'text-white' : 'text-black'}`} />
               Zufriedenheitsgarantie
             </span>
           </motion.div>
@@ -826,14 +826,14 @@ function MainContent() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.1 }}
           >
-            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm ${
+            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm border ${
               theme === 'dark'
-                ? 'bg-green-500/20 text-green-400'
-                : 'bg-green-500/10 text-green-600'
+                ? 'bg-white/10 text-white border-white/20'
+                : 'bg-black/5 text-black border-black/10'
             }`}>
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}></span>
+                <span className={`relative inline-flex rounded-full h-2 w-2 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}></span>
               </span>
               Termine verfügbar im Februar
             </div>
@@ -951,12 +951,12 @@ function MainContent() {
               <p className={`max-w-2xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Vielseitige Fotografie-Dienstleistungen für Unternehmen und Privatpersonen in Wien.</p>
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {services.map((s, i) => (
                 <motion.div key={s.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i*0.05 }}>
                   <Link href={s.href} className="group block">
                     <div className={`relative rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${g.card}`}>
-                      <div className="flex flex-row h-[140px]">
+                      <div className="flex flex-row h-[180px]">
                         {/* Content - Left */}
                         <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
                           <div>
@@ -968,7 +968,7 @@ function MainContent() {
                                 </span>
                               )}
                             </div>
-                            <p className={`text-xs leading-relaxed line-clamp-2 transition-colors duration-500 ${g.textSub}`}>{s.description}</p>
+                            <p className={`text-xs leading-relaxed line-clamp-3 transition-colors duration-500 ${g.textSub}`}>{s.description}</p>
                           </div>
                           <div className="flex items-center justify-between">
                             <span className={`text-sm font-semibold transition-colors duration-500 ${g.text}`}>
@@ -980,7 +980,7 @@ function MainContent() {
                           </div>
                         </div>
                         {/* Image - Right */}
-                        <div className="relative w-[140px] sm:w-[160px] overflow-hidden flex-shrink-0">
+                        <div className="relative w-[120px] sm:w-[140px] overflow-hidden flex-shrink-0">
                           <img
                             src={s.image}
                             alt={s.title}
@@ -990,6 +990,46 @@ function MainContent() {
                       </div>
                     </div>
                   </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ========== WARUM ICH ========== */}
+      <Section background={<GoldenSpiralBg />}>
+        <div className="py-24">
+          <div className="container mx-auto px-4 md:px-8 max-w-5xl">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Warum Kunden mich wählen</h2>
+              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Was mich von anderen Fotografen unterscheidet</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { icon: "fa-clock", title: "12+ Jahre Erfahrung", desc: "Professionelle Fotografie in Wien seit 2012" },
+                { icon: "fa-bolt", title: "Schnelle Lieferung", desc: "Standard 5-7 Tage, Express 48h möglich" },
+                { icon: "fa-calendar-check", title: "Flexible Termine", desc: "Auch Wochenende und Abendtermine" },
+                { icon: "fa-shield", title: "Zufriedenheitsgarantie", desc: "Kostenlose Nachbearbeitung bei Unzufriedenheit" },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className={`p-6 rounded-2xl ${g.card} ${g.cardHover} transition-all duration-300`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${g.iconBg}`}>
+                      <i className={`fa-solid ${item.icon} text-lg ${g.icon}`} />
+                    </div>
+                    <div>
+                      <h3 className={`text-lg font-semibold mb-1 ${g.text}`}>{item.title}</h3>
+                      <p className={`text-sm ${g.textSub}`}>{item.desc}</p>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -1139,7 +1179,7 @@ function MainContent() {
                 <AnimatePresence mode="wait">
                   <motion.div key={currentTestimonial} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }} className="text-center space-y-8">
                     <div className="flex justify-center gap-1">
-                      {[...Array(5)].map((_, i) => <i key={i} className="fa-solid fa-star text-yellow-400 text-lg" />)}
+                      {[...Array(5)].map((_, i) => <i key={i} className={`fa-solid fa-star text-lg ${theme === 'dark' ? 'text-white' : 'text-black'}`} />)}
                     </div>
                     <blockquote className={`text-xl md:text-2xl font-light italic leading-relaxed transition-colors duration-700 ${g.text}`}>
                       &ldquo;{testimonials[currentTestimonial].quote}&rdquo;
