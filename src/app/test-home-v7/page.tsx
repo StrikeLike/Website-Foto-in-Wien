@@ -800,39 +800,30 @@ const clients = [
   { name: "Autonom Health", logo: "/images/clients/autonom_Health.png", scale: 1.2 },
 ];
 
-// Testimonials with UNIQUE avatars (initials-based)
 const testimonials = [
   {
     quote: "Die Bilder zeigen unsere Produkte perfekt. Nach dem Shooting haben wir eine 35% höhere Conversion-Rate in unserem Online-Shop verzeichnet.",
     author: "Dr. med. Alfred Lohninger",
     position: "Geschäftsführer",
     company: "Autonom Health",
-    initials: "AL",
-    color: "bg-blue-600"
   },
   {
     quote: "Seine Eventfotografie fängt die Atmosphäre perfekt ein. Die Bilder wurden über 500 Mal auf LinkedIn geteilt und haben unsere Reichweite verdreifacht.",
     author: "Dr. Birgit Hofreiter",
     position: "Programmleiterin",
     company: "TU Wien i2ncubator",
-    initials: "BH",
-    color: "bg-purple-600"
   },
   {
     quote: "Seine kreative Herangehensweise hat unsere Produkte perfekt in Szene gesetzt. Unsere Instagram-Engagement ist um 40% gestiegen.",
     author: "Katja Radlgruber",
     position: "CEO",
     company: "V-Suit",
-    initials: "KR",
-    color: "bg-emerald-600"
   },
   {
     quote: "Die hochwertigen Bilder haben die Spendenrate auf unserer Website um 25% erhöht. Ein echter Gamechanger für unsere gemeinnützige Arbeit.",
     author: "Andrea Staudenherzl",
     position: "Vorstandsmitglied",
     company: "Hope for the Future",
-    initials: "AS",
-    color: "bg-amber-600"
   },
 ];
 
@@ -1109,136 +1100,62 @@ function MainContent() {
         </div>
       </Section>
 
-      {/* ========== WARUM ICH ========== */}
-      <Section background={<ViewfinderBg />}>
-        <div className="py-24">
-          <div className="container mx-auto px-4 md:px-8 max-w-5xl">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Warum Kunden mich wählen</h2>
-              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Was mich von anderen Fotografen in Wien unterscheidet</p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                { icon: "fa-clock", title: "12+ Jahre Erfahrung", desc: "Professionelle Fotografie in Wien seit 2012" },
-                { icon: "fa-bolt", title: "Schnelle Lieferung", desc: "Standard 5-7 Tage, Express 48h möglich" },
-                { icon: "fa-calendar-check", title: "Flexible Termine", desc: "Auch Wochenende und Abendtermine" },
-                { icon: "fa-shield", title: "Zufriedenheitsgarantie", desc: "Kostenlose Nachbearbeitung bei Unzufriedenheit" },
-              ].map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className={`p-6 rounded-2xl ${g.card} ${g.cardHover} transition-all duration-300`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${g.iconBg}`}>
-                      <i className={`fa-solid ${item.icon} text-lg ${g.icon}`} />
-                    </div>
-                    <div>
-                      <h3 className={`text-lg font-semibold mb-1 ${g.text}`}>{item.title}</h3>
-                      <p className={`text-sm ${g.textSub}`}>{item.desc}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ========== SO EINFACH GEHT'S ========== */}
-      <Section background={<FocusFrameBg />}>
-        <div className="py-24">
-          <div className="container mx-auto px-4 md:px-8 max-w-5xl">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>So einfach geht&apos;s</h2>
-              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>In drei Schritten zu Ihren perfekten Fotos</p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              {[
-                { step: 1, title: "Anfrage senden", description: "Kostenlos & unverbindlich. Beschreiben Sie kurz Ihr Projekt und Ihre Wünsche.", icon: "fa-paper-plane" },
-                { step: 2, title: "Beratungsgespräch", description: "Wir besprechen Details, Stil und Ablauf. Persönlich oder per Telefon.", icon: "fa-comments" },
-                { step: 3, title: "Fotoshooting", description: "Entspannte Aufnahmen und schnelle Lieferung Ihrer professionellen Bilder.", icon: "fa-camera" },
-              ].map((item, i) => (
-                <motion.div
-                  key={item.step}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.15 }}
-                  className="text-center"
-                >
-                  <div className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 ${g.card}`}>
-                    <i className={`fa-solid ${item.icon} text-2xl ${g.icon}`} />
-                    <span className={`absolute -top-3 -right-3 w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center ${
-                      theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
-                    }`}>
-                      {item.step}
-                    </span>
-                  </div>
-                  <h3 className={`text-xl font-semibold mb-3 ${g.text}`}>{item.title}</h3>
-                  <p className={`${g.textSub}`}>{item.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ========== SERVICES ========== */}
+      {/* ========== ABOUT ========== */}
       <Section background={<GoldenSpiralBg />}>
         <div className="py-32">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Meine Dienstleistungen</h2>
-              <p className={`max-w-2xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Vielseitige Fotografie-Dienstleistungen für Unternehmen und Privatpersonen in Wien.</p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {services.map((s, i) => (
-                <motion.div key={s.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i*0.05 }}>
-                  <Link href={s.href} className="group block">
-                    <div className={`relative rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${g.card}`}>
-                      <div className="flex flex-row h-[180px]">
-                        <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <h3 className={`text-base sm:text-lg font-semibold transition-colors duration-500 ${g.text}`}>{s.title}</h3>
-                              {s.popular && (
-                                <span className="text-[10px] font-semibold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded">
-                                  Beliebt
-                                </span>
-                              )}
-                            </div>
-                            <p className={`text-xs leading-relaxed line-clamp-3 transition-colors duration-500 ${g.textSub}`}>{s.description}</p>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className={`text-sm font-semibold transition-colors duration-500 ${g.text}`}>
-                              {s.price}
-                            </span>
-                            <span className={`inline-flex items-center gap-1.5 text-xs font-medium group-hover:gap-2 transition-all ${g.textMuted}`}>
-                              Details <i className="fa-solid fa-arrow-right text-[10px]" />
-                            </span>
-                          </div>
-                        </div>
-                        <div className="relative w-[140px] sm:w-[160px] overflow-hidden flex-shrink-0">
-                          <Image
-                            src={s.image}
-                            alt={`${s.title} Wien - Professionelle Fotografie Beispiel`}
-                            fill
-                            sizes="(max-width: 640px) 140px, 160px"
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                        </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center max-w-6xl mx-auto">
+              <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
+                <div className={`p-4 rounded-3xl shadow-2xl ${g.card}`}>
+                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+                    <Image
+                      src="/images/about/about-1.jpg"
+                      alt="Alexandru Bogdan - Professioneller Fotograf in Wien seit 2012"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="absolute -bottom-6 -right-6 lg:right-auto lg:-left-6">
+                  <div className={`p-6 rounded-2xl shadow-2xl ${g.card}`}>
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}>
+                        <i className={`fa-solid fa-award text-lg ${theme === 'dark' ? 'text-black' : 'text-white'}`} />
+                      </div>
+                      <div>
+                        <p className={`text-2xl font-bold transition-colors duration-700 ${g.text}`}>12+</p>
+                        <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>Jahre Erfahrung</p>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </motion.div>
-              ))}
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="space-y-6">
+                <div>
+                  <p className={`text-sm font-medium uppercase tracking-wider mb-2 transition-colors duration-700 ${g.textMuted}`}>Über mich</p>
+                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Alexandru Bogdan</h2>
+                  <p className={`text-xl font-light mt-2 transition-colors duration-700 ${g.textSub}`}>Ihr Fotograf in Wien</p>
+                </div>
+                <div className={`space-y-4 leading-relaxed transition-colors duration-700 ${g.textSub}`}>
+                  <p>Mit über 12 Jahren Erfahrung in der Portraitfotografie, Business Fotografie, Familienfotografie, Produktfotografie und Eventfotografie.</p>
+                  <p>Meine Leidenschaft ist es, die Geschichte hinter jedem Bild zu erzählen und authentische Momente festzuhalten.</p>
+                </div>
+                <div className="flex flex-wrap gap-4 pt-4">
+                  {[{ value: "500+", label: "Projekte" }, { value: "50+", label: "Firmenkunden" }, { value: "100%", label: "Zufriedenheit" }].map(s => (
+                    <div key={s.label} className={`p-4 rounded-xl text-center min-w-[100px] ${g.card}`}>
+                      <p className={`text-2xl font-bold transition-colors duration-700 ${g.text}`}>{s.value}</p>
+                      <p className={`text-xs transition-colors duration-700 ${g.textMuted}`}>{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="pt-4">
+                  <Link href="/uber-mich/" className={`inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full transition-all ${g.btn}`}>
+                    Mehr über mich <i className="fa-solid fa-arrow-right" />
+                  </Link>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -1378,7 +1295,102 @@ function MainContent() {
         </div>
       </Section>
 
-      {/* ========== TESTIMONIALS with UNIQUE initials ========== */}
+      {/* ========== SERVICES ========== */}
+      <Section background={<GoldenSpiralBg />}>
+        <div className="py-32">
+          <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Meine Dienstleistungen</h2>
+              <p className={`max-w-2xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Vielseitige Fotografie-Dienstleistungen für Unternehmen und Privatpersonen in Wien.</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {services.map((s, i) => (
+                <motion.div key={s.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i*0.05 }}>
+                  <Link href={s.href} className="group block">
+                    <div className={`relative rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${g.card}`}>
+                      <div className="flex flex-row h-[180px]">
+                        <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className={`text-base sm:text-lg font-semibold transition-colors duration-500 ${g.text}`}>{s.title}</h3>
+                              {s.popular && (
+                                <span className="text-[10px] font-semibold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded">
+                                  Beliebt
+                                </span>
+                              )}
+                            </div>
+                            <p className={`text-xs leading-relaxed line-clamp-3 transition-colors duration-500 ${g.textSub}`}>{s.description}</p>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className={`text-sm font-semibold transition-colors duration-500 ${g.text}`}>
+                              {s.price}
+                            </span>
+                            <span className={`inline-flex items-center gap-1.5 text-xs font-medium group-hover:gap-2 transition-all ${g.textMuted}`}>
+                              Details <i className="fa-solid fa-arrow-right text-[10px]" />
+                            </span>
+                          </div>
+                        </div>
+                        <div className="relative w-[140px] sm:w-[160px] overflow-hidden flex-shrink-0">
+                          <Image
+                            src={s.image}
+                            alt={`${s.title} Wien - Professionelle Fotografie Beispiel`}
+                            fill
+                            sizes="(max-width: 640px) 140px, 160px"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ========== WARUM ICH ========== */}
+      <Section background={<ViewfinderBg />}>
+        <div className="py-24">
+          <div className="container mx-auto px-4 md:px-8 max-w-5xl">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Warum Kunden mich wählen</h2>
+              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Was mich von anderen Fotografen in Wien unterscheidet</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { icon: "fa-clock", title: "12+ Jahre Erfahrung", desc: "Professionelle Fotografie in Wien seit 2012" },
+                { icon: "fa-bolt", title: "Schnelle Lieferung", desc: "Standard 5-7 Tage, Express 48h möglich" },
+                { icon: "fa-calendar-check", title: "Flexible Termine", desc: "Auch Wochenende und Abendtermine" },
+                { icon: "fa-shield", title: "Zufriedenheitsgarantie", desc: "Kostenlose Nachbearbeitung bei Unzufriedenheit" },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className={`p-6 rounded-2xl ${g.card} ${g.cardHover} transition-all duration-300`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${g.iconBg}`}>
+                      <i className={`fa-solid ${item.icon} text-lg ${g.icon}`} />
+                    </div>
+                    <div>
+                      <h3 className={`text-lg font-semibold mb-1 ${g.text}`}>{item.title}</h3>
+                      <p className={`text-sm ${g.textSub}`}>{item.desc}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ========== TESTIMONIALS ========== */}
       <Section background={<GoldenSpiralBg />}>
         <div className="py-32">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
@@ -1398,10 +1410,6 @@ function MainContent() {
                       &ldquo;{testimonials[currentTestimonial].quote}&rdquo;
                     </blockquote>
                     <div className="flex flex-col items-center gap-3">
-                      {/* Unique Avatar with Initials */}
-                      <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-bold ${testimonials[currentTestimonial].color}`}>
-                        {testimonials[currentTestimonial].initials}
-                      </div>
                       <div>
                         <p className={`font-semibold text-lg transition-colors duration-700 ${g.text}`}>{testimonials[currentTestimonial].author}</p>
                         <p className={`transition-colors duration-700 ${g.textSub}`}>{testimonials[currentTestimonial].position}</p>
@@ -1424,6 +1432,46 @@ function MainContent() {
                   />
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ========== SO EINFACH GEHT'S ========== */}
+      <Section background={<FocusFrameBg />}>
+        <div className="py-24">
+          <div className="container mx-auto px-4 md:px-8 max-w-5xl">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>So einfach geht&apos;s</h2>
+              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>In drei Schritten zu Ihren perfekten Fotos</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+              {[
+                { step: 1, title: "Anfrage senden", description: "Kostenlos & unverbindlich. Beschreiben Sie kurz Ihr Projekt und Ihre Wünsche.", icon: "fa-paper-plane" },
+                { step: 2, title: "Beratungsgespräch", description: "Wir besprechen Details, Stil und Ablauf. Persönlich oder per Telefon.", icon: "fa-comments" },
+                { step: 3, title: "Fotoshooting", description: "Entspannte Aufnahmen und schnelle Lieferung Ihrer professionellen Bilder.", icon: "fa-camera" },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15 }}
+                  className="text-center"
+                >
+                  <div className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 ${g.card}`}>
+                    <i className={`fa-solid ${item.icon} text-2xl ${g.icon}`} />
+                    <span className={`absolute -top-3 -right-3 w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center ${
+                      theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                    }`}>
+                      {item.step}
+                    </span>
+                  </div>
+                  <h3 className={`text-xl font-semibold mb-3 ${g.text}`}>{item.title}</h3>
+                  <p className={`${g.textSub}`}>{item.description}</p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
@@ -1475,67 +1523,6 @@ function MainContent() {
                   </AnimatePresence>
                 </motion.div>
               ))}
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ========== ABOUT ========== */}
-      <Section background={<GoldenSpiralBg />}>
-        <div className="py-32">
-          <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center max-w-6xl mx-auto">
-              <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
-                <div className={`p-4 rounded-3xl shadow-2xl ${g.card}`}>
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
-                    <Image
-                      src="/images/about/about-1.jpg"
-                      alt="Alexandru Bogdan - Professioneller Fotograf in Wien seit 2012"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="absolute -bottom-6 -right-6 lg:right-auto lg:-left-6">
-                  <div className={`p-6 rounded-2xl shadow-2xl ${g.card}`}>
-                    <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}>
-                        <i className={`fa-solid fa-award text-lg ${theme === 'dark' ? 'text-black' : 'text-white'}`} />
-                      </div>
-                      <div>
-                        <p className={`text-2xl font-bold transition-colors duration-700 ${g.text}`}>12+</p>
-                        <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>Jahre Erfahrung</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="space-y-6">
-                <div>
-                  <p className={`text-sm font-medium uppercase tracking-wider mb-2 transition-colors duration-700 ${g.textMuted}`}>Über mich</p>
-                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Alexandru Bogdan</h2>
-                  <p className={`text-xl font-light mt-2 transition-colors duration-700 ${g.textSub}`}>Ihr Fotograf in Wien</p>
-                </div>
-                <div className={`space-y-4 leading-relaxed transition-colors duration-700 ${g.textSub}`}>
-                  <p>Mit über 12 Jahren Erfahrung in der Portraitfotografie, Business Fotografie, Familienfotografie, Produktfotografie und Eventfotografie.</p>
-                  <p>Meine Leidenschaft ist es, die Geschichte hinter jedem Bild zu erzählen und authentische Momente festzuhalten.</p>
-                </div>
-                <div className="flex flex-wrap gap-4 pt-4">
-                  {[{ value: "500+", label: "Projekte" }, { value: "50+", label: "Firmenkunden" }, { value: "100%", label: "Zufriedenheit" }].map(s => (
-                    <div key={s.label} className={`p-4 rounded-xl text-center min-w-[100px] ${g.card}`}>
-                      <p className={`text-2xl font-bold transition-colors duration-700 ${g.text}`}>{s.value}</p>
-                      <p className={`text-xs transition-colors duration-700 ${g.textMuted}`}>{s.label}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="pt-4">
-                  <Link href="/uber-mich/" className={`inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full transition-all ${g.btn}`}>
-                    Mehr über mich <i className="fa-solid fa-arrow-right" />
-                  </Link>
-                </div>
-              </motion.div>
             </div>
           </div>
         </div>
