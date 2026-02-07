@@ -39,6 +39,8 @@ This ensures each commit = one complete work session, making it clear what was d
 | 2026-02-05 | Phase 2 | CTA urgency badge, footer business hours, social media links | Completed |
 | 2026-02-05 | SEO | JSON-LD schema, robots.txt, sitemap.xml, meta description fix | Completed |
 | 2026-02-05 | Phase 2 | Test pages v4/v5 for conversion optimization, services cards redesign (compact 3-col), Eventfotografie as primary service | Completed |
+| 2026-02-07 | Phase 2 | test-home-v6: Full conversion optimization (sticky CTA, exit intent, urgency badge, testimonials with results) | Completed |
+| 2026-02-07 | SEO | test-home-v7: Server-side schema markup, unique avatars, dynamic urgency month, proper metadata | Completed |
 
 **GitHub:** https://github.com/StrikeLike/Website-Foto-in-Wien
 
