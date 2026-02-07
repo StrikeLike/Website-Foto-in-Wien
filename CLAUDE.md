@@ -2,11 +2,15 @@
 
 ## DEVELOPMENT WORKFLOW (OBLIGATORIU)
 
-### Git Rules - MANDATORY after EVERY intervention
-After EVERY work session or significant progress, Claude MUST:
-1. `git add .` - Stage all changes
-2. `git commit -m "[PHASE X] Description"` - Commit with detailed message
+### Git Rules - ONLY on explicit request
+Claude MUST NOT commit automatically after each change.
+
+**When user requests commit** ("commitează", "git push", "fă commit", etc.):
+1. `git add .` - Stage ALL changes from current session
+2. `git commit -m "[PHASE X] Description"` - Commit with summary of session work
 3. `git push origin master` - Push to remote
+
+This ensures each commit = one complete work session, making it clear what was done in each session.
 
 **Commit message format:**
 ```
