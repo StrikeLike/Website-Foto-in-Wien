@@ -1,9 +1,8 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, createContext, useContext, useRef, ReactNode, useMemo, useCallback } from 'react';
+import { useState, useEffect, createContext, useContext, useRef, ReactNode, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 // ============================================
 // THEME CONTEXT
@@ -85,13 +84,6 @@ function Header() {
 
   return (
     <>
-      {/* Skip to content link for accessibility */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[300] focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded"
-      >
-        Zum Inhalt springen
-      </a>
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -108,13 +100,10 @@ function Header() {
           <div className="flex items-center justify-between h-20">
             <Link href="/" className="relative z-10">
               <motion.div whileHover={{ scale: 1.02 }}>
-                <Image
+                <img
                   src="/images/logos/fotograf-wien-logo.svg"
                   alt="Foto in Wien - Professioneller Fotograf"
-                  width={150}
-                  height={48}
                   className={`h-10 md:h-12 w-auto transition-all duration-500 ${isDark ? '' : 'invert'}`}
-                  priority
                 />
               </motion.div>
             </Link>
@@ -133,19 +122,26 @@ function Header() {
               ))}
             </nav>
 
-            <div className="flex items-center gap-3">
-              {/* CTA Button */}
-              <Link
-                href="/kontakt/"
-                className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-white text-black hover:bg-white/90"
+            <div className="flex items-center gap-4">
+              <a
+                href="tel:+436608459895"
+                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  isDark
+                    ? 'bg-white/10 text-white hover:bg-white/20'
+                    : 'bg-black/5 text-gray-700 hover:bg-black/10'
+                }`}
               >
-                Jetzt Termin sichern
-              </Link>
+                <i className="fa-solid fa-phone text-xs" />
+                +43 660 845 9895
+              </a>
 
-              {/* Mobile Menu Button */}
               <motion.button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 bg-white/10 hover:bg-white/20 text-white"
+                className={`lg:hidden w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isDark
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-black/5 hover:bg-black/10 text-gray-600'
+                }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <i className={`fa-solid ${mobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-sm`} />
@@ -419,8 +415,18 @@ function StickyCTABar() {
                   }`}
                 >
                   <i className="fa-solid fa-phone" />
-                  +43 660 845 9895
+                  <span className="hidden sm:inline">+43 660 845 9895</span>
                 </a>
+                <Link
+                  href="/kontakt/"
+                  className={`px-5 py-2 text-sm font-semibold rounded-full transition-all ${
+                    isDark
+                      ? 'bg-white text-black hover:bg-white/90'
+                      : 'bg-black text-white hover:bg-black/90'
+                  }`}
+                >
+                  Jetzt Termin sichern
+                </Link>
               </div>
             </div>
           </div>
@@ -438,63 +444,26 @@ function ExitIntentPopup() {
   const [visible, setVisible] = useState(false);
   const isDark = theme === 'dark';
 
-  const triggerExitIntent = useCallback(() => {
-    const hasShown = sessionStorage.getItem('exit-intent-shown');
-    if (hasShown) return;
-    setVisible(true);
-    sessionStorage.setItem('exit-intent-shown', 'true');
-  }, []);
-
   useEffect(() => {
     const hasShown = sessionStorage.getItem('exit-intent-shown');
     if (hasShown) return;
 
-    // Desktop: mouse leave detection
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0) {
-        triggerExitIntent();
+        setVisible(true);
+        sessionStorage.setItem('exit-intent-shown', 'true');
       }
     };
-
-    // Mobile: rapid scroll up detection
-    let lastScrollY = window.scrollY;
-    let scrollUpDistance = 0;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const scrollDiff = lastScrollY - currentScrollY;
-
-      // If scrolling up
-      if (scrollDiff > 0) {
-        scrollUpDistance += scrollDiff;
-        // If rapid scroll up > 300px while in upper half of page
-        if (scrollUpDistance > 300 && currentScrollY < window.innerHeight * 0.5) {
-          triggerExitIntent();
-        }
-      } else {
-        // Reset on scroll down
-        scrollUpDistance = 0;
-      }
-      lastScrollY = currentScrollY;
-    };
-
-    // Timeout trigger: 45 seconds on page without conversion
-    const timeoutTimer = setTimeout(() => {
-      triggerExitIntent();
-    }, 45000);
 
     const timer = setTimeout(() => {
       document.addEventListener('mouseleave', handleMouseLeave);
-      window.addEventListener('scroll', handleScroll, { passive: true });
     }, 5000);
 
     return () => {
       clearTimeout(timer);
-      clearTimeout(timeoutTimer);
       document.removeEventListener('mouseleave', handleMouseLeave);
-      window.removeEventListener('scroll', handleScroll);
     };
-  }, [triggerExitIntent]);
+  }, []);
 
   if (!visible) return null;
 
@@ -895,7 +864,7 @@ function useGlass() {
 // MAIN CONTENT
 // ============================================
 function MainContent() {
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const g = useGlass();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -913,7 +882,7 @@ function MainContent() {
   const scroll = (dir: 'left' | 'right') => scrollRef.current?.scrollBy({ left: dir === 'left' ? -360 : 360, behavior: 'smooth' });
 
   return (
-    <main id="main-content" className={`relative transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+    <main className={`relative transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
       <Header />
       <StickyCTABar />
       <WhatsAppButton cookieVisible={cookieVisible} />
@@ -923,15 +892,12 @@ function MainContent() {
 
       {/* ========== HERO ========== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img
             src="/images/hero/fotograf-wien-hero.jpg"
             alt="Professioneller Fotograf in Wien - Studio mit Kameraausrüstung"
-            fill
-            priority
-            className="object-cover"
+            className="min-w-full min-h-full object-cover"
             style={{ objectPosition: '50% 35%' }}
-            sizes="100vw"
           />
           <div className={`absolute inset-0 transition-colors duration-700 ${
             theme === 'dark'
@@ -1086,14 +1052,12 @@ function MainContent() {
                 {[...clients, ...clients].map((c, i) => (
                   <div key={`${c.name}-${i}`} className="flex-shrink-0 group cursor-pointer">
                     <div className="flex flex-col items-center gap-4">
-                      <div className="w-[140px] md:w-[180px] h-16 md:h-20 flex items-center justify-center relative">
-                        <Image
+                      <div className="w-[140px] md:w-[180px] h-16 md:h-20 flex items-center justify-center">
+                        <img
                           src={c.logo}
                           alt={`${c.name} - Business Fotografie Referenz Wien`}
-                          width={180}
-                          height={60}
                           style={{ transform: `scale(${c.scale || 1})` }}
-                          className={`max-h-12 md:max-h-[60px] w-auto object-contain transition-all duration-500 ${
+                          className={`max-h-12 md:max-h-[60px] max-w-full object-contain transition-all duration-500 ${
                             theme === 'dark'
                               ? 'brightness-0 invert opacity-50 group-hover:opacity-100'
                               : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100'
@@ -1226,12 +1190,10 @@ function MainContent() {
                           </div>
                         </div>
                         <div className="relative w-[140px] sm:w-[160px] overflow-hidden flex-shrink-0">
-                          <Image
+                          <img
                             src={s.image}
                             alt={`${s.title} Wien - Professionelle Fotografie Beispiel`}
-                            fill
-                            sizes="(max-width: 640px) 140px, 160px"
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                         </div>
                       </div>
@@ -1277,20 +1239,8 @@ function MainContent() {
 
             <div
               ref={scrollRef}
-              role="region"
-              aria-label="Portfolio Projekte Carousel"
-              tabIndex={0}
-              className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black/20 dark:focus:ring-white/20 rounded-lg"
+              className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
               style={{ scrollbarWidth: 'none' }}
-              onKeyDown={(e) => {
-                if (e.key === 'ArrowLeft') {
-                  e.preventDefault();
-                  scroll('left');
-                } else if (e.key === 'ArrowRight') {
-                  e.preventDefault();
-                  scroll('right');
-                }
-              }}
               onMouseDown={(e) => {
                 const el = scrollRef.current;
                 if (!el) return;
@@ -1327,13 +1277,11 @@ function MainContent() {
                   <Link href={`/portfolio/${p.slug}/`} className="group block h-full" draggable={false}>
                     <div className="relative h-[440px] rounded-3xl overflow-hidden">
                       <div className="absolute inset-0">
-                        <Image
+                        <img
                           src={p.image}
                           alt={`${p.title} - ${p.category} Fotografie Wien`}
-                          fill
-                          sizes="340px"
                           draggable={false}
-                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         <div className={`absolute inset-0 transition-opacity duration-500 ${p.dark ? 'bg-gradient-to-t from-black/80 via-black/20 to-black/30' : 'bg-gradient-to-t from-white/90 via-white/30 to-white/40'}`} />
                       </div>
@@ -1412,16 +1360,9 @@ function MainContent() {
                 </AnimatePresence>
               </motion.div>
 
-              <div className="flex justify-center gap-2 mt-8" role="tablist" aria-label="Testimonials Navigation">
-                {testimonials.map((t, i) => (
-                  <button
-                    key={i}
-                    role="tab"
-                    aria-selected={i === currentTestimonial}
-                    aria-label={`Testimonial ${i + 1} von ${t.author}`}
-                    onClick={() => setCurrentTestimonial(i)}
-                    className={`h-2 rounded-full transition-all duration-300 ${i === currentTestimonial ? `${theme === 'dark' ? 'bg-white' : 'bg-black'} w-8` : `${theme === 'dark' ? 'bg-white/30 hover:bg-white/50' : 'bg-black/30 hover:bg-black/50'} w-2`}`}
-                  />
+              <div className="flex justify-center gap-2 mt-8">
+                {testimonials.map((_, i) => (
+                  <button key={i} onClick={() => setCurrentTestimonial(i)} className={`h-2 rounded-full transition-all duration-300 ${i === currentTestimonial ? `${theme === 'dark' ? 'bg-white' : 'bg-black'} w-8` : `${theme === 'dark' ? 'bg-white/30 hover:bg-white/50' : 'bg-black/30 hover:bg-black/50'} w-2`}`} />
                 ))}
               </div>
             </div>
@@ -1450,17 +1391,14 @@ function MainContent() {
                 >
                   <button
                     onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
-                    aria-expanded={expandedFaq === i}
-                    aria-controls={`faq-answer-${i}`}
                     className={`w-full flex items-center justify-between p-6 text-left transition-colors ${g.cardHover}`}
                   >
                     <span className={`font-medium pr-4 ${g.text}`}>{faq.question}</span>
-                    <i className={`fa-solid fa-chevron-down transition-transform duration-300 flex-shrink-0 ${g.icon} ${expandedFaq === i ? 'rotate-180' : ''}`} aria-hidden="true" />
+                    <i className={`fa-solid fa-chevron-down transition-transform duration-300 flex-shrink-0 ${g.icon} ${expandedFaq === i ? 'rotate-180' : ''}`} />
                   </button>
                   <AnimatePresence>
                     {expandedFaq === i && (
                       <motion.div
-                        id={`faq-answer-${i}`}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -1488,12 +1426,10 @@ function MainContent() {
               <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
                 <div className={`p-4 rounded-3xl shadow-2xl ${g.card}`}>
                   <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
-                    <Image
+                    <img
                       src="/images/about/about-1.jpg"
                       alt="Alexandru Bogdan - Professioneller Fotograf in Wien seit 2012"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 </div>
@@ -1594,11 +1530,9 @@ function MainContent() {
         <div className="relative z-10 container mx-auto px-4 md:px-8 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <div>
-              <Image
+              <img
                 src="/images/logos/fotograf-wien-logo.svg"
                 alt="Foto in Wien - Professioneller Fotograf"
-                width={150}
-                height={40}
                 className={`h-10 w-auto mb-4 transition-all duration-500 ${theme === 'dark' ? '' : 'invert'}`}
               />
               <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>Eventfotografie, Porträtfotografie, Businessfotografie, und Produktfotografie in Wien.</p>
@@ -1638,9 +1572,33 @@ function MainContent() {
           </div>
           <div className={`border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 ${g.divider}`}>
             <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>© 2026 fotoinwien.at. Alle Rechte vorbehalten.</p>
-            <div className={`flex gap-6 text-sm transition-colors duration-700 ${g.textMuted}`}>
-              <Link href="/impressum/">Impressum</Link>
-              <Link href="/datenschutz/">Datenschutz</Link>
+            <div className="flex items-center gap-6">
+              <div className={`flex gap-6 text-sm transition-colors duration-700 ${g.textMuted}`}>
+                <Link href="/impressum/">Impressum</Link>
+                <Link href="/datenschutz/">Datenschutz</Link>
+              </div>
+              <motion.button
+                onClick={toggleTheme}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  theme === 'dark'
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-black/5 hover:bg-black/10 text-gray-600'
+                }`}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Theme wechseln"
+              >
+                <AnimatePresence mode="wait">
+                  <motion.i
+                    key={theme}
+                    className={theme === 'dark' ? 'fa-solid fa-sun text-sm' : 'fa-solid fa-moon text-sm'}
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </AnimatePresence>
+              </motion.button>
             </div>
           </div>
         </div>

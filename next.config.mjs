@@ -4,7 +4,7 @@ const nextConfig = {
   trailingSlash: true,
 
   images: {
-    unoptimized: false,
+    unoptimized: true, // Required for static export (output: 'export')
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 768, 1024, 1280, 1536, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
