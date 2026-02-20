@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s | Foto in Wien",
   },
   description:
-    "Professioneller Fotograf in Wien für Business, Event, Portrait und Produktfotografie. 12+ Jahre Erfahrung. Kunden: TU Wien, Autonom Health, Gerstner.",
+    "Professioneller Fotograf in Wien. Business Portraits ab €100, Eventfotografie ab €400, Produktfotos ab €25. Über 12 Jahre Erfahrung. Jetzt kostenloses Angebot anfordern!",
   keywords: [
     "Fotograf Wien",
     "Business Fotografie Wien",
@@ -101,10 +101,17 @@ const jsonLd = {
         }
       ],
       "priceRange": "€€",
+      "paymentAccepted": "Cash, Credit Card, Bank Transfer",
+      "sameAs": [
+        "https://www.instagram.com/fotoinwien/",
+        "https://www.facebook.com/fotoinwien/"
+      ],
       "aggregateRating": {
         "@type": "AggregateRating",
-        "ratingValue": "5",
-        "reviewCount": "50"
+        "ratingValue": "5.0",
+        "reviewCount": "47",
+        "bestRating": "5",
+        "worstRating": "1"
       }
     },
     {
@@ -137,6 +144,19 @@ const jsonLd = {
       "jobTitle": "Professioneller Fotograf",
       "worksFor": { "@id": "https://www.fotoinwien.at/#business" },
       "knowsAbout": ["Business Fotografie", "Event Fotografie", "Portrait Fotografie", "Produkt Fotografie"]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Was kostet ein Fotoshooting?", "acceptedAnswer": { "@type": "Answer", "text": "Die Preise variieren je nach Art des Shootings. Business Portraits starten ab €100, Eventfotografie ab €400, Produktfotos ab €25/Produkt. Kontaktieren Sie mich für ein individuelles Angebot." } },
+        { "@type": "Question", "name": "Wie lange dauert es bis ich die Bilder bekomme?", "acceptedAnswer": { "@type": "Answer", "text": "Standardlieferung innerhalb von 5-7 Werktagen. Express-Lieferung in 48h ist gegen Aufpreis möglich." } },
+        { "@type": "Question", "name": "Kann ich die Bilder kommerziell nutzen?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, alle Business- und Produktfotos beinhalten eine kommerzielle Nutzungslizenz. Die genauen Nutzungsrechte werden im Vertrag festgehalten." } },
+        { "@type": "Question", "name": "Was passiert wenn mir die Bilder nicht gefallen?", "acceptedAnswer": { "@type": "Answer", "text": "Ich biete eine Zufriedenheitsgarantie. Sollten Sie nicht zufrieden sein, gibt es eine kostenlose Nachbearbeitung oder Neuaufnahme der Bilder." } },
+        { "@type": "Question", "name": "Wo findet das Shooting statt?", "acceptedAnswer": { "@type": "Answer", "text": "Je nach Wunsch entweder in meinem Studio in Wien, bei Ihnen vor Ort (Büro, Event-Location) oder an einem Outdoor-Standort Ihrer Wahl in Wien und Umgebung." } },
+        { "@type": "Question", "name": "Was muss ich mitbringen?", "acceptedAnswer": { "@type": "Answer", "text": "Für Business-Portraits empfehle ich 2-3 Outfit-Optionen. Für Produktfotos sollten die Produkte sauber und unbeschädigt sein. Bei Events organisiere ich alles vor Ort." } },
+        { "@type": "Question", "name": "Wie viele Bilder bekomme ich?", "acceptedAnswer": { "@type": "Answer", "text": "Das hängt vom Paket ab. Bei Portraits erhalten Sie typischerweise 15-30 bearbeitete Bilder, bei Events 100-300 Bilder, bei Produkten alle vereinbarten Aufnahmen." } },
+        { "@type": "Question", "name": "Kann ich die Location selbst wählen?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, absolut! Ich bin flexibel und komme gerne zu Ihrer Wunsch-Location in Wien und Umgebung. Fahrtkosten innerhalb Wiens sind inklusive." } }
+      ]
     }
   ]
 };
