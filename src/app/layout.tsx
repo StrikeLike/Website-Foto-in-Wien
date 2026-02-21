@@ -8,7 +8,7 @@ import "@fortawesome/fontawesome-free/css/brands.min.css";
 
 const jost = Jost({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
   variable: "--font-jost",
   display: "swap",
 });
@@ -20,13 +20,19 @@ export const metadata: Metadata = {
     template: "%s | Foto in Wien",
   },
   description:
-    "Professioneller Fotograf in Wien. Business Portraits ab €100, Eventfotografie ab €400, Produktfotos ab €25. Über 12 Jahre Erfahrung. Jetzt kostenloses Angebot anfordern!",
+    "Eventfotograf & Fotograf Wien - Eventfotografie ab €400, Business Portraits ab €100, Bewerbungsfotos & Produktfotos. Fotostudio Wien, 12+ Jahre Erfahrung. Jetzt Angebot!",
   keywords: [
     "Fotograf Wien",
-    "Business Fotografie Wien",
     "Eventfotograf Wien",
+    "Fotoshooting Wien",
+    "Fotostudio Wien",
+    "Bewerbungsfotos Wien",
+    "Business Fotografie Wien",
     "Porträtfotografie Wien",
     "Produktfotografie Wien",
+    "LinkedIn Fotograf Wien",
+    "Mitarbeiterfotos Wien",
+    "Corporate Fotografie Wien",
     "Food Fotografie Wien",
   ],
   authors: [{ name: "Alexandru Bogdan" }],
@@ -38,8 +44,8 @@ export const metadata: Metadata = {
     locale: "de_AT",
     url: "https://www.fotoinwien.at",
     siteName: "Foto in Wien",
-    title: "Fotograf Wien - Alexandru Bogdan",
-    description: "Professionelle Fotografie für Business, Events und mehr",
+    title: "Fotograf Wien - Alexandru Bogdan | Business & Event Fotografie",
+    description: "Eventfotograf & Fotograf Wien - Eventfotografie ab €400, Business Portraits ab €100, Bewerbungsfotos & Produktfotos. Fotostudio Wien, 12+ Jahre Erfahrung. Jetzt Angebot!",
     images: [
       {
         url: "/og-image.jpg",
@@ -52,9 +58,13 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Fotograf Wien - Alexandru Bogdan",
-    description: "Professionelle Business & Event Fotografie",
+    title: "Fotograf Wien - Alexandru Bogdan | Business & Event Fotografie",
+    description: "Eventfotograf & Fotograf Wien - Eventfotografie ab €400, Business Portraits ab €100, Bewerbungsfotos & Produktfotos. Fotostudio Wien, 12+ Jahre Erfahrung.",
     images: ["/og-image.jpg"],
+  },
+
+  alternates: {
+    canonical: "https://www.fotoinwien.at",
   },
 
   robots: {
@@ -128,12 +138,12 @@ const jsonLd = {
         "@type": "OfferCatalog",
         "name": "Fotografie Dienstleistungen",
         "itemListElement": [
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Businessfotografie" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Eventfotografie" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Portraitfotografie" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Produktfotografie" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Food Fotografie" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Familienfotografie" } }
+          { "@type": "Offer", "price": "400", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "400", "priceCurrency": "EUR", "minPrice": "400" }, "itemOffered": { "@type": "Service", "name": "Eventfotografie", "description": "Professionelle Eventfotografie in Wien für Firmenevents, Konferenzen und Galas." } },
+          { "@type": "Offer", "price": "100", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "100", "priceCurrency": "EUR", "minPrice": "100" }, "itemOffered": { "@type": "Service", "name": "Businessfotografie", "description": "Business Portraits, Bewerbungsfotos und Mitarbeiterfotos in Wien. Headshots für LinkedIn und Xing." } },
+          { "@type": "Offer", "price": "150", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "150", "priceCurrency": "EUR", "minPrice": "150" }, "itemOffered": { "@type": "Service", "name": "Portraitfotografie", "description": "Portraitfotografie im Studio oder Outdoor in Wien. Authentische Porträtfotos für jeden Anlass." } },
+          { "@type": "Offer", "price": "25", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "25", "priceCurrency": "EUR", "minPrice": "25" }, "itemOffered": { "@type": "Service", "name": "Produktfotografie", "description": "Produktfotografie in Wien für E-Commerce, Amazon und Kataloge." } },
+          { "@type": "Offer", "price": "350", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "350", "priceCurrency": "EUR", "minPrice": "350" }, "itemOffered": { "@type": "Service", "name": "Food Fotografie", "description": "Food Fotografie in Wien für Restaurants, Hotels und Social Media." } },
+          { "@type": "Offer", "price": "200", "priceCurrency": "EUR", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "200", "priceCurrency": "EUR", "minPrice": "200" }, "itemOffered": { "@type": "Service", "name": "Familienfotografie", "description": "Familienfotografie und Babyfotos in Wien. Im Studio oder Outdoor." } }
         ]
       }
     },
@@ -151,11 +161,13 @@ const jsonLd = {
         { "@type": "Question", "name": "Was kostet ein Fotoshooting?", "acceptedAnswer": { "@type": "Answer", "text": "Die Preise variieren je nach Art des Shootings. Business Portraits starten ab €100, Eventfotografie ab €400, Produktfotos ab €25/Produkt. Kontaktieren Sie mich für ein individuelles Angebot." } },
         { "@type": "Question", "name": "Wie lange dauert es bis ich die Bilder bekomme?", "acceptedAnswer": { "@type": "Answer", "text": "Standardlieferung innerhalb von 5-7 Werktagen. Express-Lieferung in 48h ist gegen Aufpreis möglich." } },
         { "@type": "Question", "name": "Kann ich die Bilder kommerziell nutzen?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, alle Business- und Produktfotos beinhalten eine kommerzielle Nutzungslizenz. Die genauen Nutzungsrechte werden im Vertrag festgehalten." } },
-        { "@type": "Question", "name": "Was passiert wenn mir die Bilder nicht gefallen?", "acceptedAnswer": { "@type": "Answer", "text": "Ich biete eine Zufriedenheitsgarantie. Sollten Sie nicht zufrieden sein, gibt es eine kostenlose Nachbearbeitung oder Neuaufnahme der Bilder." } },
         { "@type": "Question", "name": "Wo findet das Shooting statt?", "acceptedAnswer": { "@type": "Answer", "text": "Je nach Wunsch entweder in meinem Studio in Wien, bei Ihnen vor Ort (Büro, Event-Location) oder an einem Outdoor-Standort Ihrer Wahl in Wien und Umgebung." } },
         { "@type": "Question", "name": "Was muss ich mitbringen?", "acceptedAnswer": { "@type": "Answer", "text": "Für Business-Portraits empfehle ich 2-3 Outfit-Optionen. Für Produktfotos sollten die Produkte sauber und unbeschädigt sein. Bei Events organisiere ich alles vor Ort." } },
-        { "@type": "Question", "name": "Wie viele Bilder bekomme ich?", "acceptedAnswer": { "@type": "Answer", "text": "Das hängt vom Paket ab. Bei Portraits erhalten Sie typischerweise 15-30 bearbeitete Bilder, bei Events 100-300 Bilder, bei Produkten alle vereinbarten Aufnahmen." } },
-        { "@type": "Question", "name": "Kann ich die Location selbst wählen?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, absolut! Ich bin flexibel und komme gerne zu Ihrer Wunsch-Location in Wien und Umgebung. Fahrtkosten innerhalb Wiens sind inklusive." } }
+        { "@type": "Question", "name": "Wie viele Bilder bekomme ich?", "acceptedAnswer": { "@type": "Answer", "text": "Das hängt vom Paket ab. Bei Portraits erhalten Sie typischerweise 10-30 bearbeitete Bilder, bei Events 100-300 Bilder, bei Produkten alle vereinbarten Aufnahmen." } },
+        { "@type": "Question", "name": "Kann ich die Location selbst wählen?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, absolut! Ich bin flexibel und komme gerne zu Ihrer Wunsch-Location in Wien und Umgebung. Fahrtkosten innerhalb Wiens sind inklusive." } },
+        { "@type": "Question", "name": "Bieten Sie auch Bewerbungsfotos und LinkedIn-Headshots an?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, Bewerbungsfotos und professionelle LinkedIn-Headshots gehören zu meinen beliebtesten Dienstleistungen. Ab €100 erhalten Sie professionelle Bewerbungsbilder im Fotostudio in Wien." } },
+        { "@type": "Question", "name": "Machen Sie auch Mitarbeiterfotos für Unternehmen?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, ich biete Corporate Fotografie und Mitarbeiterfotos für Unternehmen in Wien an. Ob im Büro, auf Events oder im Studio - flexible Pakete ab €20 pro Person." } },
+        { "@type": "Question", "name": "Wie läuft die Buchung ab?", "acceptedAnswer": { "@type": "Answer", "text": "Ganz einfach: Schicken Sie mir eine Anfrage per E-Mail, Telefon oder WhatsApp. Ich melde mich innerhalb von 24 Stunden mit einem unverbindlichen Angebot. Nach Ihrer Zusage vereinbaren wir gemeinsam den Termin und alle Details." } }
       ]
     }
   ]

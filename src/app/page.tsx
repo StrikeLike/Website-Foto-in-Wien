@@ -782,12 +782,12 @@ function GoldenSpiralBg() {
 // DATA
 // ============================================
 const services = [
-  { icon: "fa-solid fa-calendar-days", title: "Eventfotografie", description: "Eventfotograf in Wien für Firmenveranstaltungen, Konferenzen und Galas. Professionelle Dokumentation.", href: "/leistungen/eventfotografie/", price: "Ab €400", image: "/images/portfolio/events/tu-wien/tu-wien-event-01.jpg", popular: true },
-  { icon: "fa-solid fa-briefcase", title: "Businessfotografie", description: "Business Portraits und Mitarbeiterfotos in Wien. Professionelle Bilder für LinkedIn, Website und Marketing.", href: "/leistungen/businessfotografie/", price: "Ab €100", image: "/images/portfolio/portraits/DSC_3017.jpg" },
-  { icon: "fa-solid fa-user", title: "Portraitfotografie", description: "Professionelle Porträtfotos in Wien. Authentische Aufnahmen im Studio oder an Outdoor-Locations.", href: "/leistungen/portraitfotografie/", price: "Ab €150", image: "/images/portfolio/portraits/1-1.jpg" },
-  { icon: "fa-solid fa-box", title: "Produktfotografie", description: "Produktfotos für E-Commerce und Kataloge in Wien. Freisteller und Lifestyle-Aufnahmen.", href: "/leistungen/produktfotografie/", price: "Ab €25/Stk", image: "/images/portfolio/products/DSC_0007-1.jpg" },
-  { icon: "fa-solid fa-utensils", title: "Foodfotografie", description: "Food Fotografie in Wien für Restaurants, Hotels und Social Media. Appetitliche Aufnahmen.", href: "/leistungen/foodfotografie/", price: "Ab €350", image: "/images/portfolio/food/DSC_8186.jpg" },
-  { icon: "fa-solid fa-people-roof", title: "Familienfotografie", description: "Familienfotograf in Wien. Natürliche Familienfotos im Studio oder Outdoor in Wien.", href: "/leistungen/familienfotografie/", price: "Ab €200", image: "/images/portfolio/family/DSC_0987-1.jpg" },
+  { icon: "fa-solid fa-calendar-days", title: "Eventfotografie", description: "Eventfotograf Wien für Firmenevents, Konferenzen und Galas. Professionelle Event-Dokumentation mit schneller Lieferung.", href: "/leistungen/eventfotografie/", price: "Ab €400", image: "/images/portfolio/events/tu-wien/tu-wien-event-01.jpg", popular: true },
+  { icon: "fa-solid fa-briefcase", title: "Businessfotografie", description: "Business Portraits, Bewerbungsfotos und Mitarbeiterfotos Wien. Headshots für LinkedIn, Xing und Corporate Websites.", href: "/leistungen/businessfotografie/", price: "Ab €100", image: "/images/portfolio/portraits/DSC_3017.jpg" },
+  { icon: "fa-solid fa-user", title: "Portraitfotografie", description: "Portraitfotograf Wien - Fotoshooting im Studio oder Outdoor. Authentische Porträtfotos für jeden Anlass.", href: "/leistungen/portraitfotografie/", price: "Ab €150", image: "/images/portfolio/portraits/1-1.jpg" },
+  { icon: "fa-solid fa-box", title: "Produktfotografie", description: "Produktfotografie Wien für E-Commerce, Amazon und Kataloge. Freisteller, Lifestyle und Packshots.", href: "/leistungen/produktfotografie/", price: "Ab €25/Stk", image: "/images/portfolio/products/DSC_0007-1.jpg" },
+  { icon: "fa-solid fa-utensils", title: "Foodfotografie", description: "Food Fotograf Wien für Restaurants, Hotels und Social Media. Professionelle Speisekarten- und Menufotos.", href: "/leistungen/foodfotografie/", price: "Ab €350", image: "/images/portfolio/food/DSC_8186.jpg" },
+  { icon: "fa-solid fa-people-roof", title: "Familienfotografie", description: "Familienfotograf Wien - Natürliche Familienfotos und Babyfotos. Fotoshooting im Studio oder Outdoor.", href: "/leistungen/familienfotografie/", price: "Ab €200", image: "/images/portfolio/family/DSC_0987-1.jpg" },
 ];
 
 const clients = [
@@ -802,28 +802,46 @@ const clients = [
 
 const testimonials = [
   {
+    quote: "Alex did such an EXCELLENT job of capturing our event from start to finish. He even managed to capture those small moments that make you smile with small nuances that made the event special. So pleased to have worked with him. A stellar story teller through photography.",
+    author: "Thando C.",
+    position: "Thales",
+    company: "",
+    initials: "TC",
+  },
+  {
     quote: "Die Bilder zeigen unsere Produkte perfekt. Nach dem Shooting haben wir eine 35% höhere Conversion-Rate in unserem Online-Shop verzeichnet.",
     author: "Dr. med. Alfred Lohninger",
     position: "Geschäftsführer",
     company: "Autonom Health",
+    initials: "AL",
   },
   {
     quote: "Seine Eventfotografie fängt die Atmosphäre perfekt ein. Die Bilder wurden über 500 Mal auf LinkedIn geteilt und haben unsere Reichweite verdreifacht.",
     author: "Dr. Birgit Hofreiter",
     position: "Programmleiterin",
     company: "TU Wien i2ncubator",
+    initials: "BH",
   },
   {
     quote: "Seine kreative Herangehensweise hat unsere Produkte perfekt in Szene gesetzt. Unsere Instagram-Engagement ist um 40% gestiegen.",
     author: "Katja Radlgruber",
     position: "CEO",
     company: "V-Suit",
+    initials: "KR",
   },
   {
     quote: "Die hochwertigen Bilder haben die Spendenrate auf unserer Website um 25% erhöht. Ein echter Gamechanger für unsere gemeinnützige Arbeit.",
     author: "Andrea Staudenherzl",
     position: "Vorstandsmitglied",
     company: "Hope for the Future",
+    initials: "AS",
+  },
+  {
+    quote: "Alexandru Bogdan is an absolutely top-notch photographer in Vienna. He perfectly captured the atmosphere of our wedding and, with his warm and positive personality, created a wonderful atmosphere himself. What was particularly impressive was that he arrived much earlier than planned and stayed longer to ensure that the entire wedding and all its special moments were captured.",
+    author: "Markus St.",
+    position: "",
+    company: "",
+    initials: "MS",
   },
 ];
 
@@ -840,11 +858,13 @@ const faqItems = [
   { question: "Was kostet ein Fotoshooting?", answer: "Die Preise variieren je nach Art des Shootings. Business Portraits starten ab €100, Eventfotografie ab €400, Produktfotos ab €25/Produkt. Kontaktieren Sie mich für ein individuelles Angebot." },
   { question: "Wie lange dauert es bis ich die Bilder bekomme?", answer: "Standardlieferung innerhalb von 5-7 Werktagen. Express-Lieferung in 48h ist gegen Aufpreis möglich." },
   { question: "Kann ich die Bilder kommerziell nutzen?", answer: "Ja, alle Business- und Produktfotos beinhalten eine kommerzielle Nutzungslizenz. Die genauen Nutzungsrechte werden im Vertrag festgehalten." },
-  { question: "Was passiert wenn mir die Bilder nicht gefallen?", answer: "Ich biete eine Zufriedenheitsgarantie. Sollten Sie nicht zufrieden sein, gibt es eine kostenlose Nachbearbeitung oder Neuaufnahme der Bilder." },
   { question: "Wo findet das Shooting statt?", answer: "Je nach Wunsch entweder in meinem Studio in Wien, bei Ihnen vor Ort (Büro, Event-Location) oder an einem Outdoor-Standort Ihrer Wahl in Wien und Umgebung." },
   { question: "Was muss ich mitbringen?", answer: "Für Business-Portraits empfehle ich 2-3 Outfit-Optionen. Für Produktfotos sollten die Produkte sauber und unbeschädigt sein. Bei Events organisiere ich alles vor Ort." },
-  { question: "Wie viele Bilder bekomme ich?", answer: "Das hängt vom Paket ab. Bei Portraits erhalten Sie typischerweise 15-30 bearbeitete Bilder, bei Events 100-300 Bilder, bei Produkten alle vereinbarten Aufnahmen." },
+  { question: "Wie viele Bilder bekomme ich?", answer: "Das hängt vom Paket ab. Bei Portraits erhalten Sie typischerweise 10-30 bearbeitete Bilder, bei Events 100-300 Bilder, bei Produkten alle vereinbarten Aufnahmen." },
   { question: "Kann ich die Location selbst wählen?", answer: "Ja, absolut! Ich bin flexibel und komme gerne zu Ihrer Wunsch-Location in Wien und Umgebung. Fahrtkosten innerhalb Wiens sind inklusive." },
+  { question: "Bieten Sie auch Bewerbungsfotos und LinkedIn-Headshots an?", answer: "Ja, Bewerbungsfotos und professionelle LinkedIn-Headshots gehören zu meinen beliebtesten Dienstleistungen. Ab €100 erhalten Sie professionelle Bewerbungsbilder im Fotostudio in Wien." },
+  { question: "Machen Sie auch Mitarbeiterfotos für Unternehmen?", answer: "Ja, ich biete Corporate Fotografie und Mitarbeiterfotos für Unternehmen in Wien an. Ob im Büro, auf Events oder im Studio - flexible Pakete ab €20 pro Person." },
+  { question: "Wie läuft die Buchung ab?", answer: "Ganz einfach: Schicken Sie mir eine Anfrage per E-Mail, Telefon oder WhatsApp. Ich melde mich innerhalb von 24 Stunden mit einem unverbindlichen Angebot. Nach Ihrer Zusage vereinbaren wir gemeinsam den Termin und alle Details." },
 ];
 
 // ============================================
@@ -938,7 +958,7 @@ function MainContent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            Professionelle Fotografie in Wien
+            Fotograf Wien · Eventfotograf · Fotostudio
           </motion.p>
           <motion.h1
             className={`text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
@@ -954,7 +974,7 @@ function MainContent() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
           >
-            Business · Event · Portrait · Produkt Fotografie seit 2012
+            Event · Business · Portrait · Produkt · Bewerbungsfotos seit 2012
           </motion.p>
 
           {/* Trust Badges */}
@@ -964,10 +984,17 @@ function MainContent() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.9 }}
           >
-            <span className="flex items-center gap-2">
+            <a
+              href="https://www.google.com/search?q=fotoinwien+bewertungen"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
               <i className={`fa-solid fa-star ${theme === 'dark' ? 'text-white' : 'text-black'}`} />
-              <span className="font-semibold">5.0</span> Google
-            </span>
+              <span className="font-semibold">5.0</span>
+              <span className={theme === 'dark' ? 'text-white/50' : 'text-gray-400'}>·</span>
+              <span>47 Google-Bewertungen</span>
+            </a>
             <span className="flex items-center gap-2">
               <i className="fa-solid fa-camera" />
               <span className="font-semibold">500+</span> Projekte
@@ -1139,16 +1166,36 @@ function MainContent() {
                   <p className={`text-xl font-light mt-2 transition-colors duration-700 ${g.textSub}`}>Ihr Fotograf in Wien</p>
                 </div>
                 <div className={`space-y-4 leading-relaxed transition-colors duration-700 ${g.textSub}`}>
-                  <p>Mit über 12 Jahren Erfahrung in der Portraitfotografie, Business Fotografie, Familienfotografie, Produktfotografie und Eventfotografie.</p>
-                  <p>Meine Leidenschaft ist es, die Geschichte hinter jedem Bild zu erzählen und authentische Momente festzuhalten.</p>
+                  <p>Professioneller Eventfotograf und Fotograf in Wien mit über 12 Jahren Erfahrung. Spezialisiert auf Eventfotografie, Business Fotografie, Bewerbungsfotos, Produktfotografie und Firmenfotografie.</p>
+                  <p>Von der kompletten Eventdokumentation über Mitarbeiterfotos bis hin zu LinkedIn Headshots - ich erzähle die Geschichte hinter jedem Bild.</p>
                 </div>
-                <div className="flex flex-wrap gap-4 pt-4">
+                <div className="flex flex-wrap items-stretch gap-4 pt-4">
                   {[{ value: "500+", label: "Projekte" }, { value: "100%", label: "Zufriedenheit" }].map(s => (
                     <div key={s.label} className={`p-4 rounded-xl text-center min-w-[100px] ${g.card}`}>
                       <p className={`text-2xl font-bold transition-colors duration-700 ${g.text}`}>{s.value}</p>
                       <p className={`text-xs transition-colors duration-700 ${g.textMuted}`}>{s.label}</p>
                     </div>
                   ))}
+                  {/* Medienauftritte */}
+                  <div className={`p-4 rounded-xl min-w-[100px] ${g.card}`}>
+                    <p className={`text-xs font-semibold uppercase tracking-[0.15em] mb-2 transition-colors duration-700 ${g.textMuted}`}>Medienauftritte</p>
+                    <div className="flex items-center gap-3">
+                      {[
+                        { src: "/images/medienauftrite/wien-live-logo.png", alt: "Wien Live Look Magazin", width: 80, height: 40 },
+                        { src: "/images/medienauftrite/wiener-zeitung-logo.svg", alt: "Wiener Zeitung", width: 100, height: 18 },
+                      ].map((media) => (
+                        <img
+                          key={media.alt}
+                          src={media.src}
+                          alt={media.alt}
+                          width={media.width}
+                          height={media.height}
+                          className={`object-contain h-6 w-auto ${theme === 'dark' ? 'brightness-0 invert opacity-60' : 'opacity-50'} transition-all duration-300`}
+                          loading="lazy"
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
                 <div className="pt-4">
                   <Link href="/uber-mich/" className={`inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full transition-all ${g.btn}`}>
@@ -1168,7 +1215,7 @@ function MainContent() {
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
               <div>
                 <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-2 transition-colors duration-700 ${g.text}`}>
-                  Ausgewählte Arbeiten.
+                  Portfolio - Ausgewählte Arbeiten
                 </h2>
                 <p className={`max-w-xl transition-colors duration-700 ${g.textSub}`}>Ein Einblick in meine Projekte für namhafte Kunden aus Wien.</p>
               </div>
@@ -1300,7 +1347,7 @@ function MainContent() {
         <div className="py-20">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Meine Dienstleistungen</h2>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Fotoshooting Wien - Meine Dienstleistungen</h2>
               <p className={`max-w-2xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Vielseitige Fotografie-Dienstleistungen für Unternehmen und Privatpersonen in Wien.</p>
             </motion.div>
 
@@ -1361,9 +1408,9 @@ function MainContent() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { icon: "fa-clock", title: "12+ Jahre Erfahrung", desc: "Professionelle Fotografie in Wien seit 2012" },
-                { icon: "fa-bolt", title: "Schnelle Lieferung", desc: "Standard 5-7 Tage, Express 48h möglich" },
-                { icon: "fa-calendar-check", title: "Flexible Termine", desc: "Auch Wochenende und Abendtermine" },
+                { icon: "fa-clock", title: "12+ Jahre Fotograf in Wien", desc: "Professionelle Eventfotografie und Fotografie seit 2012" },
+                { icon: "fa-camera", title: "500+ Projekte", desc: "Events, Portraits, Produkte und Businessfotos in Wien" },
+                { icon: "fa-bolt", title: "Schnelle Bildlieferung", desc: "Standard 5-7 Tage, Express 48h möglich" },
                 { icon: "fa-shield", title: "Zufriedenheitsgarantie", desc: "Kostenlose Nachbearbeitung bei Unzufriedenheit" },
               ].map((item, i) => (
                 <motion.div
@@ -1412,8 +1459,8 @@ function MainContent() {
                     <div className="flex flex-col items-center gap-3">
                       <div>
                         <p className={`font-semibold text-lg transition-colors duration-700 ${g.text}`}>{testimonials[currentTestimonial].author}</p>
-                        <p className={`transition-colors duration-700 ${g.textSub}`}>{testimonials[currentTestimonial].position}</p>
-                        <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>{testimonials[currentTestimonial].company}</p>
+                        {testimonials[currentTestimonial].position && <p className={`transition-colors duration-700 ${g.textSub}`}>{testimonials[currentTestimonial].position}</p>}
+                        {testimonials[currentTestimonial].company && <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>{testimonials[currentTestimonial].company}</p>}
                       </div>
                     </div>
                   </motion.div>
@@ -1538,7 +1585,7 @@ function MainContent() {
                   <div className={`w-20 h-20 mx-auto rounded-2xl flex items-center justify-center ${g.iconBg}`}>
                     <i className={`fa-solid fa-camera text-3xl transition-colors duration-700 ${g.icon}`} />
                   </div>
-                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Bereit für Ihr Fotoshooting?</h2>
+                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Bereit für Ihr Fotoshooting in Wien?</h2>
                   <p className={`text-xl max-w-2xl mx-auto transition-colors duration-700 ${g.textSub}`}>Lassen Sie uns gemeinsam Ihre Vision verwirklichen. Kontaktieren Sie mich für ein unverbindliches Beratungsgespräch.</p>
 
                   <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
