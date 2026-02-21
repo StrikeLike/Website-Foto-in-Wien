@@ -1,50 +1,12 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, createContext, useContext, useRef, ReactNode, useMemo, useCallback } from 'react';
+import { useState, useEffect, useRef, ReactNode, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-
-// ============================================
-// THEME CONTEXT
-// ============================================
-type ThemeMode = 'dark' | 'light';
-
-const ThemeContext = createContext<{ theme: ThemeMode; toggleTheme: () => void }>({
-  theme: 'dark',
-  toggleTheme: () => {},
-});
-
-function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<ThemeMode>('dark');
-  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
-}
-
-const useTheme = () => useContext(ThemeContext);
-
-// ============================================
-// MOUSE TRACKING CONTEXT
-// ============================================
-const MouseContext = createContext({ x: 0, y: 0, normalizedX: 0, normalizedY: 0 });
-
-function MouseProvider({ children }: { children: ReactNode }) {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0, normalizedX: 0, normalizedY: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const normalizedX = (e.clientX / window.innerWidth - 0.5) * 2;
-      const normalizedY = (e.clientY / window.innerHeight - 0.5) * 2;
-      setMousePos({ x: e.clientX, y: e.clientY, normalizedX, normalizedY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  return <MouseContext.Provider value={mousePos}>{children}</MouseContext.Provider>;
-}
-
-const useMouse = () => useContext(MouseContext);
+import { Header, Footer } from '@/components/layout';
+import { useMouse } from '@/context/MouseContext';
+import { useGlass } from '@/hooks/useGlass';
 
 // ============================================
 // DYNAMIC URGENCY - Get current/next month in German
@@ -56,150 +18,8 @@ function getUrgencyMonth(): string {
   ];
   const now = new Date();
   const day = now.getDate();
-  // If after 20th of month, show next month
   const monthIndex = day > 20 ? (now.getMonth() + 1) % 12 : now.getMonth();
   return months[monthIndex];
-}
-
-// ============================================
-// STICKY HEADER (theme toggle removed)
-// ============================================
-function Header() {
-  const { theme } = useTheme();
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isDark = theme === 'dark';
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { label: 'Portfolio', href: '/portfolio/' },
-    { label: 'Leistungen', href: '/leistungen/' },
-    { label: 'Preise', href: '/preise/' },
-    { label: 'Kontakt', href: '/kontakt/' },
-  ];
-
-  return (
-    <>
-      {/* Skip to content link for accessibility */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[300] focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded"
-      >
-        Zum Inhalt springen
-      </a>
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${
-          scrolled
-            ? isDark
-              ? 'bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/10'
-              : 'bg-white/80 backdrop-blur-xl border-b border-black/5 shadow-sm'
-            : 'bg-transparent'
-        }`}
-      >
-        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-          <div className="flex items-center justify-between h-20">
-            <Link href="/" className="relative z-10">
-              <motion.div whileHover={{ scale: 1.02 }}>
-                <Image
-                  src="/images/logos/fotograf-wien-logo.svg"
-                  alt="Foto in Wien - Professioneller Fotograf"
-                  width={150}
-                  height={48}
-                  className={`h-10 md:h-12 w-auto transition-all duration-500 ${isDark ? '' : 'invert'}`}
-                  priority
-                />
-              </motion.div>
-            </Link>
-
-            <nav className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-sm font-medium transition-colors duration-300 hover:opacity-70 ${
-                    isDark ? 'text-white/80 hover:text-white' : 'text-gray-600 hover:text-black'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="flex items-center gap-3">
-              {/* CTA Button */}
-              <Link
-                href="/kontakt/"
-                className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all bg-white text-black hover:bg-white/90"
-              >
-                Jetzt Termin sichern
-              </Link>
-
-              {/* Mobile Menu Button */}
-              <motion.button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 bg-white/10 hover:bg-white/20 text-white"
-                whileTap={{ scale: 0.95 }}
-              >
-                <i className={`fa-solid ${mobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-sm`} />
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </motion.header>
-
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className={`fixed inset-0 z-[190] lg:hidden ${isDark ? 'bg-[#0a0a0a]/95' : 'bg-white/95'} backdrop-blur-xl`}
-          >
-            <div className="flex flex-col items-center justify-center h-full gap-8">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3, delay: i * 0.1 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`text-2xl font-semibold transition-colors ${
-                      isDark ? 'text-white hover:text-white/70' : 'text-gray-900 hover:text-gray-500'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.a
-                href="tel:+436608459895"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.4 }}
-                className={`mt-4 flex items-center gap-2 text-lg ${isDark ? 'text-white/70' : 'text-gray-600'}`}
-              >
-                <i className="fa-solid fa-phone" />
-                +43 660 845 9895
-              </motion.a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
 }
 
 // ============================================
@@ -239,7 +59,6 @@ function WhatsAppButton({ cookieVisible }: { cookieVisible: boolean }) {
 // BACK TO TOP BUTTON
 // ============================================
 function BackToTop({ cookieVisible }: { cookieVisible: boolean }) {
-  const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -260,11 +79,9 @@ function BackToTop({ cookieVisible }: { cookieVisible: boolean }) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={scrollToTop}
-          className={`fixed left-6 z-[180] w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${
-            theme === 'dark'
-              ? 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'
-              : 'bg-black/5 text-gray-700 hover:bg-black/10 backdrop-blur-sm'
-          } ${cookieVisible ? 'bottom-24 md:bottom-6' : 'bottom-6'}`}
+          className={`fixed left-6 z-[180] w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm ${
+            cookieVisible ? 'bottom-24 md:bottom-6' : 'bottom-6'
+          }`}
           aria-label="Nach oben scrollen"
         >
           <i className="fa-solid fa-arrow-up" />
@@ -278,9 +95,7 @@ function BackToTop({ cookieVisible }: { cookieVisible: boolean }) {
 // COOKIE CONSENT BANNER
 // ============================================
 function CookieConsent({ onVisibilityChange }: { onVisibilityChange: (visible: boolean) => void }) {
-  const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
-  const isDark = theme === 'dark';
 
   useEffect(() => {
     const consent = localStorage.getItem('cookie-consent');
@@ -314,16 +129,12 @@ function CookieConsent({ onVisibilityChange }: { onVisibilityChange: (visible: b
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className={`fixed bottom-0 left-0 right-0 z-[250] p-3 md:p-6 ${
-          isDark
-            ? 'bg-[#1a1a1a]/95 border-t border-white/10'
-            : 'bg-white/95 border-t border-black/5 shadow-2xl'
-        } backdrop-blur-xl`}
+        className="fixed bottom-0 left-0 right-0 z-[250] p-3 md:p-6 bg-[#1a1a1a]/95 border-t border-white/10 backdrop-blur-xl"
       >
         <div className="container mx-auto px-2 md:px-8 max-w-7xl">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
             <div className="flex-1 text-center md:text-left">
-              <p className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <p className="text-sm text-white">
                 <i className="fa-solid fa-cookie-bite mr-2" />
                 Diese Website verwendet Cookies.{' '}
                 <Link href="/datenschutz/" className="underline hover:no-underline">
@@ -334,21 +145,13 @@ function CookieConsent({ onVisibilityChange }: { onVisibilityChange: (visible: b
             <div className="flex gap-2 w-full md:w-auto">
               <button
                 onClick={acceptNecessary}
-                className={`flex-1 md:flex-none px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-full transition-all ${
-                  isDark
-                    ? 'border border-white/20 text-white hover:bg-white/10'
-                    : 'border border-black/20 text-gray-600 hover:bg-black/5'
-                }`}
+                className="flex-1 md:flex-none px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-full transition-all border border-white/20 text-white hover:bg-white/10"
               >
                 Nur notwendige
               </button>
               <button
                 onClick={acceptAll}
-                className={`flex-1 md:flex-none px-4 md:px-6 py-2 text-xs md:text-sm font-medium rounded-full transition-all ${
-                  isDark
-                    ? 'bg-white text-black hover:bg-white/90'
-                    : 'bg-black text-white hover:bg-black/90'
-                }`}
+                className="flex-1 md:flex-none px-4 md:px-6 py-2 text-xs md:text-sm font-medium rounded-full transition-all bg-white text-black hover:bg-white/90"
               >
                 Alle akzeptieren
               </button>
@@ -364,10 +167,8 @@ function CookieConsent({ onVisibilityChange }: { onVisibilityChange: (visible: b
 // STICKY CTA BAR
 // ============================================
 function StickyCTABar() {
-  const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
   const [ctaInView, setCtaInView] = useState(false);
-  const isDark = theme === 'dark';
   const urgencyMonth = useMemo(() => getUrgencyMonth(), []);
 
   useEffect(() => {
@@ -395,16 +196,12 @@ function StickyCTABar() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className={`fixed top-20 left-0 right-0 z-[150] py-3 ${
-            isDark
-              ? 'bg-[#0a0a0a]/90 border-b border-white/10'
-              : 'bg-white/90 border-b border-black/5 shadow-sm'
-          } backdrop-blur-xl`}
+          className="fixed top-20 left-0 right-0 z-[150] py-3 bg-[#0a0a0a]/90 border-b border-white/10 backdrop-blur-xl"
         >
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <div className="flex items-center justify-between">
               <div className="hidden md:flex items-center gap-4">
-                <span className={`text-sm ${isDark ? 'text-white/70' : 'text-gray-600'}`}>
+                <span className="text-sm text-white/70">
                   <i className="fa-solid fa-calendar-check mr-2" />
                   Nur noch 3 Termine im {urgencyMonth} verfügbar
                 </span>
@@ -412,11 +209,7 @@ function StickyCTABar() {
               <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-end">
                 <a
                   href="tel:+436608459895"
-                  className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full transition-all ${
-                    isDark
-                      ? 'bg-white/10 text-white hover:bg-white/20'
-                      : 'bg-black/5 text-gray-700 hover:bg-black/10'
-                  }`}
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full transition-all bg-white/10 text-white hover:bg-white/20"
                 >
                   <i className="fa-solid fa-phone" />
                   +43 660 845 9895
@@ -434,9 +227,7 @@ function StickyCTABar() {
 // EXIT INTENT POPUP
 // ============================================
 function ExitIntentPopup() {
-  const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
-  const isDark = theme === 'dark';
 
   const triggerExitIntent = useCallback(() => {
     const hasShown = sessionStorage.getItem('exit-intent-shown');
@@ -449,39 +240,28 @@ function ExitIntentPopup() {
     const hasShown = sessionStorage.getItem('exit-intent-shown');
     if (hasShown) return;
 
-    // Desktop: mouse leave detection
     const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0) {
-        triggerExitIntent();
-      }
+      if (e.clientY <= 0) triggerExitIntent();
     };
 
-    // Mobile: rapid scroll up detection
     let lastScrollY = window.scrollY;
     let scrollUpDistance = 0;
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const scrollDiff = lastScrollY - currentScrollY;
-
-      // If scrolling up
       if (scrollDiff > 0) {
         scrollUpDistance += scrollDiff;
-        // If rapid scroll up > 300px while in upper half of page
         if (scrollUpDistance > 300 && currentScrollY < window.innerHeight * 0.5) {
           triggerExitIntent();
         }
       } else {
-        // Reset on scroll down
         scrollUpDistance = 0;
       }
       lastScrollY = currentScrollY;
     };
 
-    // Timeout trigger: 45 seconds on page without conversion
-    const timeoutTimer = setTimeout(() => {
-      triggerExitIntent();
-    }, 45000);
+    const timeoutTimer = setTimeout(() => triggerExitIntent(), 45000);
 
     const timer = setTimeout(() => {
       document.addEventListener('mouseleave', handleMouseLeave);
@@ -518,41 +298,33 @@ function ExitIntentPopup() {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className={`relative max-w-md w-full p-8 rounded-3xl shadow-2xl ${
-            isDark
-              ? 'bg-[#1a1a1a] border border-white/10'
-              : 'bg-white border border-black/5'
-          }`}
+          className="relative max-w-md w-full p-8 rounded-3xl shadow-2xl bg-[#1a1a1a] border border-white/10"
         >
           <button
             onClick={() => setVisible(false)}
-            className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-              isDark ? 'hover:bg-white/10 text-white/50' : 'hover:bg-black/5 text-gray-400'
-            }`}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-white/10 text-white/50"
           >
             <i className="fa-solid fa-xmark" />
           </button>
 
           <div className="text-center">
-            <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center ${
-              isDark ? 'bg-white/10' : 'bg-black/5'
-            }`}>
-              <i className={`fa-solid fa-gift text-2xl ${isDark ? 'text-white' : 'text-black'}`} />
+            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center bg-white/10">
+              <i className="fa-solid fa-gift text-2xl text-white" />
             </div>
 
-            <h3 className={`text-2xl font-bold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h3 className="text-2xl font-bold mb-3 text-white">
               Bevor Sie gehen...
             </h3>
 
-            <p className={`text-lg mb-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-lg mb-6 text-gray-300">
               Sichern Sie sich <span className="font-bold">10% Rabatt</span> auf Ihr erstes Fotoshooting!
             </p>
 
-            <div className={`p-4 rounded-xl mb-6 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+            <div className="p-4 rounded-xl mb-6 bg-white/5">
+              <p className="text-sm text-gray-400">
                 Erwähnen Sie diesen Code bei Ihrer Anfrage:
               </p>
-              <p className={`text-xl font-mono font-bold mt-1 ${isDark ? 'text-white' : 'text-black'}`}>
+              <p className="text-xl font-mono font-bold mt-1 text-white">
                 WILLKOMMEN10
               </p>
             </div>
@@ -560,17 +332,13 @@ function ExitIntentPopup() {
             <Link
               href="/kontakt/"
               onClick={() => setVisible(false)}
-              className={`inline-flex items-center justify-center gap-2 w-full px-6 py-4 font-semibold rounded-full transition-all ${
-                isDark
-                  ? 'bg-white text-black hover:bg-white/90'
-                  : 'bg-black text-white hover:bg-black/90'
-              }`}
+              className="inline-flex items-center justify-center gap-2 w-full px-6 py-4 font-semibold rounded-full transition-all bg-white text-black hover:bg-white/90"
             >
               <i className="fa-solid fa-paper-plane" />
               Jetzt Angebot anfordern
             </Link>
 
-            <p className={`text-xs mt-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            <p className="text-xs mt-4 text-gray-500">
               Gültig für Neukunden. Nicht kombinierbar.
             </p>
           </div>
@@ -586,13 +354,11 @@ function ExitIntentPopup() {
 
 function ViewfinderBg() {
   const mouse = useMouse();
-  const { theme } = useTheme();
-  const d = theme === 'dark';
-  const line = d ? 'bg-white/20' : 'bg-black/20';
-  const bracket = d ? 'border-white/50' : 'border-black/50';
-  const dot = d ? 'bg-white/60' : 'bg-black/60';
-  const border = d ? 'border-white/30' : 'border-black/30';
-  const glow = d ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+  const line = 'bg-white/20';
+  const bracket = 'border-white/50';
+  const dot = 'bg-white/60';
+  const border = 'border-white/30';
+  const glow = 'rgba(255,255,255,0.05)';
 
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -623,12 +389,10 @@ function ViewfinderBg() {
 
 function FocusFrameBg() {
   const mouse = useMouse();
-  const { theme } = useTheme();
-  const d = theme === 'dark';
-  const border = d ? 'border-white/30' : 'border-black/30';
-  const corner = d ? 'border-white/50' : 'border-black/50';
-  const dot = d ? 'bg-white/40' : 'bg-black/40';
-  const glow = d ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+  const border = 'border-white/30';
+  const corner = 'border-white/50';
+  const dot = 'bg-white/40';
+  const glow = 'rgba(255,255,255,0.08)';
 
   const frames = [{ x: '30%', y: '35%', size: 100, delay: 0 }, { x: '65%', y: '40%', size: 80, delay: 1 }, { x: '45%', y: '60%', size: 120, delay: 2 }, { x: '70%', y: '70%', size: 70, delay: 3 }];
 
@@ -651,13 +415,11 @@ function FocusFrameBg() {
 
 function GoldenSpiralBg() {
   const mouse = useMouse();
-  const { theme } = useTheme();
-  const d = theme === 'dark';
-  const border = d ? 'border-white/10' : 'border-black/8';
-  const borderLight = d ? 'border-white/[0.06]' : 'border-black/[0.05]';
-  const dot = d ? 'bg-white/40' : 'bg-black/30';
-  const glow = d ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
-  const glowStrong = d ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+  const border = 'border-white/10';
+  const borderLight = 'border-white/[0.06]';
+  const dot = 'bg-white/40';
+  const glow = 'rgba(255,255,255,0.05)';
+  const glowStrong = 'rgba(255,255,255,0.08)';
 
   const fibRects = [
     { w: 61.8, h: 61.8, x: 38.2, y: 0 },
@@ -761,16 +523,8 @@ function GoldenSpiralBg() {
               x: mouse.normalizedX * (i + 1) * 8,
               y: mouse.normalizedY * (i + 1) * 8
             }}
-            animate={{
-              y: [-8, 8, -8],
-              opacity: [0.2, 0.5, 0.2]
-            }}
-            transition={{
-              duration: 5 + i,
-              repeat: Infinity,
-              delay: i * 0.5,
-              ease: "easeInOut"
-            }}
+            animate={{ y: [-8, 8, -8], opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: 5 + i, repeat: Infinity, delay: i * 0.5, ease: "easeInOut" }}
           />
         );
       })}
@@ -806,42 +560,36 @@ const testimonials = [
     author: "Thando C.",
     position: "Thales",
     company: "",
-    initials: "TC",
   },
   {
     quote: "Die Bilder zeigen unsere Produkte perfekt. Nach dem Shooting haben wir eine 35% höhere Conversion-Rate in unserem Online-Shop verzeichnet.",
     author: "Dr. med. Alfred Lohninger",
     position: "Geschäftsführer",
     company: "Autonom Health",
-    initials: "AL",
   },
   {
     quote: "Seine Eventfotografie fängt die Atmosphäre perfekt ein. Die Bilder wurden über 500 Mal auf LinkedIn geteilt und haben unsere Reichweite verdreifacht.",
     author: "Dr. Birgit Hofreiter",
     position: "Programmleiterin",
     company: "TU Wien i2ncubator",
-    initials: "BH",
   },
   {
     quote: "Seine kreative Herangehensweise hat unsere Produkte perfekt in Szene gesetzt. Unsere Instagram-Engagement ist um 40% gestiegen.",
     author: "Katja Radlgruber",
     position: "CEO",
     company: "V-Suit",
-    initials: "KR",
   },
   {
     quote: "Die hochwertigen Bilder haben die Spendenrate auf unserer Website um 25% erhöht. Ein echter Gamechanger für unsere gemeinnützige Arbeit.",
     author: "Andrea Staudenherzl",
     position: "Vorstandsmitglied",
     company: "Hope for the Future",
-    initials: "AS",
   },
   {
     quote: "Alexandru Bogdan is an absolutely top-notch photographer in Vienna. He perfectly captured the atmosphere of our wedding and, with his warm and positive personality, created a wonderful atmosphere himself. What was particularly impressive was that he arrived much earlier than planned and stayed longer to ensure that the entire wedding and all its special moments were captured.",
     author: "Markus St.",
     position: "",
     company: "",
-    initials: "MS",
   },
 ];
 
@@ -871,42 +619,18 @@ const faqItems = [
 // SECTION WRAPPER
 // ============================================
 function Section({ children, background, className = '' }: { children: ReactNode; background: ReactNode; className?: string }) {
-  const { theme } = useTheme();
-
   return (
-    <section
-      className={`relative overflow-hidden transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'} ${className}`}
-    >
-      <div className="absolute inset-0 transition-all duration-700">{background}</div>
+    <section className={`relative overflow-hidden bg-[#0a0a0a] ${className}`}>
+      <div className="absolute inset-0">{background}</div>
       <div className="relative z-10">{children}</div>
     </section>
   );
 }
 
 // ============================================
-// GLASSMORPHISM HELPER
-// ============================================
-function useGlass() {
-  const { theme } = useTheme();
-  const d = theme === 'dark';
-  return {
-    card: d ? 'bg-white/[0.06] backdrop-blur-xl border border-white/10' : 'bg-white/70 backdrop-blur-xl border border-black/5',
-    cardHover: d ? 'hover:bg-white/[0.08]' : 'hover:bg-white hover:shadow-xl',
-    text: d ? 'text-white' : 'text-[#0a0a0a]',
-    textSub: d ? 'text-gray-400' : 'text-gray-500',
-    textMuted: d ? 'text-gray-500' : 'text-gray-600',
-    icon: d ? 'text-white/50' : 'text-gray-600',
-    iconBg: d ? 'bg-white/[0.05]' : 'bg-black/5',
-    btn: d ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90',
-    divider: d ? 'border-white/[0.05]' : 'border-black/[0.05]',
-  };
-}
-
-// ============================================
 // MAIN CONTENT
 // ============================================
 function MainContent() {
-  const { theme } = useTheme();
   const g = useGlass();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -924,7 +648,7 @@ function MainContent() {
   const scroll = (dir: 'left' | 'right') => scrollRef.current?.scrollBy({ left: dir === 'left' ? -360 : 360, behavior: 'smooth' });
 
   return (
-    <main id="main-content" className={`relative transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+    <main id="main-content" className="relative bg-[#0a0a0a]">
       <Header />
       <StickyCTABar />
       <WhatsAppButton cookieVisible={cookieVisible} />
@@ -944,16 +668,12 @@ function MainContent() {
             style={{ objectPosition: '50% 35%' }}
             sizes="100vw"
           />
-          <div className={`absolute inset-0 transition-colors duration-700 ${
-            theme === 'dark'
-              ? 'bg-gradient-to-b from-black/70 via-black/50 to-black/80'
-              : 'bg-gradient-to-b from-white/60 via-white/40 to-white/70'
-          }`} />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
         </div>
 
         <div className="relative z-10 text-center px-4">
           <motion.p
-            className={`text-xs uppercase tracking-[0.5em] mb-8 ${theme === 'dark' ? 'text-white/70' : 'text-gray-700'}`}
+            className="text-xs uppercase tracking-[0.5em] mb-8 text-white/70"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
@@ -961,7 +681,7 @@ function MainContent() {
             Fotograf Wien · Eventfotograf · Fotostudio
           </motion.p>
           <motion.h1
-            className={`text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
+            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 text-white"
             initial={{ opacity: 0, y: 40, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -969,7 +689,7 @@ function MainContent() {
             Ihr Fotograf in Wien
           </motion.h1>
           <motion.p
-            className={`text-xl md:text-2xl mb-8 ${theme === 'dark' ? 'text-white/80' : 'text-gray-600'}`}
+            className="text-xl md:text-2xl mb-8 text-white/80"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
@@ -979,7 +699,7 @@ function MainContent() {
 
           {/* Trust Badges */}
           <motion.div
-            className={`flex flex-wrap justify-center gap-4 md:gap-6 mb-10 text-sm ${theme === 'dark' ? 'text-white/70' : 'text-gray-600'}`}
+            className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10 text-sm text-white/70"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.9 }}
@@ -990,9 +710,9 @@ function MainContent() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
-              <i className={`fa-solid fa-star ${theme === 'dark' ? 'text-white' : 'text-black'}`} />
+              <i className="fa-solid fa-star text-white" />
               <span className="font-semibold">5.0</span>
-              <span className={theme === 'dark' ? 'text-white/50' : 'text-gray-400'}>·</span>
+              <span className="text-white/50">·</span>
               <span>47 Google-Bewertungen</span>
             </a>
             <span className="flex items-center gap-2">
@@ -1000,7 +720,7 @@ function MainContent() {
               <span className="font-semibold">500+</span> Projekte
             </span>
             <span className="flex items-center gap-2">
-              <i className={`fa-solid fa-check-circle ${theme === 'dark' ? 'text-white' : 'text-black'}`} />
+              <i className="fa-solid fa-check-circle text-white" />
               Zufriedenheitsgarantie
             </span>
           </motion.div>
@@ -1014,29 +734,21 @@ function MainContent() {
           >
             <Link
               href="/kontakt/"
-              className={`px-10 py-5 text-lg font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 ${
-                theme === 'dark'
-                  ? 'bg-white text-black hover:bg-white/90'
-                  : 'bg-black text-white hover:bg-black/90'
-              }`}
+              className="px-10 py-5 text-lg font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 bg-white text-black hover:bg-white/90"
             >
               <i className="fa-solid fa-paper-plane" />
               Kostenloses Angebot in 24h
             </Link>
             <Link
               href="/portfolio/"
-              className={`px-6 py-3 border font-medium rounded-full transition-all inline-flex items-center justify-center gap-2 text-sm ${
-                theme === 'dark'
-                  ? 'border-white/30 text-white/80 hover:bg-white/10'
-                  : 'border-black/30 text-gray-700 hover:bg-black/5'
-              }`}
+              className="px-6 py-3 border font-medium rounded-full transition-all inline-flex items-center justify-center gap-2 text-sm border-white/30 text-white/80 hover:bg-white/10"
             >
               Portfolio ansehen <i className="fa-solid fa-arrow-right text-xs" />
             </Link>
           </motion.div>
 
           <motion.p
-            className={`text-sm mb-8 ${theme === 'dark' ? 'text-white/50' : 'text-gray-500'}`}
+            className="text-sm mb-8 text-white/50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.05 }}
@@ -1050,14 +762,10 @@ function MainContent() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.1 }}
           >
-            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm border ${
-              theme === 'dark'
-                ? 'bg-white/10 text-white border-white/20'
-                : 'bg-black/5 text-black border-black/10'
-            }`}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm border bg-white/10 text-white border-white/20">
               <span className="relative flex h-2 w-2">
-                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}></span>
-                <span className={`relative inline-flex rounded-full h-2 w-2 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-white"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
               </span>
               Nur noch 3 Termine im {urgencyMonth} verfügbar
             </div>
@@ -1070,12 +778,12 @@ function MainContent() {
             transition={{ duration: 1, delay: 1.3 }}
           >
             <motion.div
-              className={`w-8 h-14 border-2 rounded-full flex justify-center pt-3 ${theme === 'dark' ? 'border-white/30' : 'border-black/30'}`}
+              className="w-8 h-14 border-2 rounded-full flex justify-center pt-3 border-white/30"
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               <motion.div
-                className={`w-1.5 h-3 rounded-full ${theme === 'dark' ? 'bg-white/50' : 'bg-black/50'}`}
+                className="w-1.5 h-3 rounded-full bg-white/50"
                 animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
@@ -1089,12 +797,12 @@ function MainContent() {
         <div className="py-12 md:py-16">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10">
-              <p className={`text-xs uppercase tracking-[0.3em] transition-colors duration-700 ${g.textMuted}`}>Vertrauen von führenden Unternehmen</p>
+              <p className={`text-xs uppercase tracking-[0.3em] ${g.textMuted}`}>Vertrauen von führenden Unternehmen</p>
             </motion.div>
 
             <div className="relative overflow-hidden py-4">
-              <div className={`absolute left-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent' : 'bg-gradient-to-r from-white to-transparent'}`} />
-              <div className={`absolute right-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none ${theme === 'dark' ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent' : 'bg-gradient-to-l from-white to-transparent'}`} />
+              <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-r from-[#0a0a0a] to-transparent" />
+              <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-[#0a0a0a] to-transparent" />
 
               <motion.div
                 className="flex gap-16 md:gap-24"
@@ -1111,11 +819,7 @@ function MainContent() {
                           width={180}
                           height={60}
                           style={{ transform: `scale(${c.scale || 1})` }}
-                          className={`max-h-12 md:max-h-[60px] w-auto object-contain transition-all duration-500 ${
-                            theme === 'dark'
-                              ? 'brightness-0 invert opacity-50 group-hover:opacity-100'
-                              : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100'
-                          }`}
+                          className="max-h-12 md:max-h-[60px] w-auto object-contain transition-all duration-500 brightness-0 invert opacity-50 group-hover:opacity-100"
                         />
                       </div>
                     </div>
@@ -1147,12 +851,12 @@ function MainContent() {
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="absolute -bottom-6 -right-6 lg:right-auto lg:-left-6">
                   <div className={`p-6 rounded-2xl shadow-2xl ${g.card}`}>
                     <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}>
-                        <i className={`fa-solid fa-award text-lg ${theme === 'dark' ? 'text-black' : 'text-white'}`} />
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white">
+                        <i className="fa-solid fa-award text-lg text-black" />
                       </div>
                       <div>
-                        <p className={`text-2xl font-bold transition-colors duration-700 ${g.text}`}>12+</p>
-                        <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>Jahre Erfahrung</p>
+                        <p className={`text-2xl font-bold ${g.text}`}>12+</p>
+                        <p className={`text-sm ${g.textMuted}`}>Jahre Erfahrung</p>
                       </div>
                     </div>
                   </div>
@@ -1161,24 +865,24 @@ function MainContent() {
 
               <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="space-y-6">
                 <div>
-                  <p className={`text-sm font-medium uppercase tracking-wider mb-2 transition-colors duration-700 ${g.textMuted}`}>Über mich</p>
-                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Alexandru Bogdan</h2>
-                  <p className={`text-xl font-light mt-2 transition-colors duration-700 ${g.textSub}`}>Ihr Fotograf in Wien</p>
+                  <p className={`text-sm font-medium uppercase tracking-wider mb-2 ${g.textMuted}`}>Über mich</p>
+                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight ${g.text}`}>Alexandru Bogdan</h2>
+                  <p className={`text-xl font-light mt-2 ${g.textSub}`}>Ihr Fotograf in Wien</p>
                 </div>
-                <div className={`space-y-4 leading-relaxed transition-colors duration-700 ${g.textSub}`}>
+                <div className={`space-y-4 leading-relaxed ${g.textSub}`}>
                   <p>Professioneller Eventfotograf und Fotograf in Wien mit über 12 Jahren Erfahrung. Spezialisiert auf Eventfotografie, Business Fotografie, Bewerbungsfotos, Produktfotografie und Firmenfotografie.</p>
                   <p>Von der kompletten Eventdokumentation über Mitarbeiterfotos bis hin zu LinkedIn Headshots - ich erzähle die Geschichte hinter jedem Bild.</p>
                 </div>
                 <div className="flex flex-wrap items-stretch gap-4 pt-4">
                   {[{ value: "500+", label: "Projekte" }, { value: "100%", label: "Zufriedenheit" }].map(s => (
                     <div key={s.label} className={`p-4 rounded-xl text-center min-w-[100px] ${g.card}`}>
-                      <p className={`text-2xl font-bold transition-colors duration-700 ${g.text}`}>{s.value}</p>
-                      <p className={`text-xs transition-colors duration-700 ${g.textMuted}`}>{s.label}</p>
+                      <p className={`text-2xl font-bold ${g.text}`}>{s.value}</p>
+                      <p className={`text-xs ${g.textMuted}`}>{s.label}</p>
                     </div>
                   ))}
                   {/* Medienauftritte */}
                   <div className={`p-4 rounded-xl min-w-[100px] ${g.card}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-[0.15em] mb-2 transition-colors duration-700 ${g.textMuted}`}>Medienauftritte</p>
+                    <p className={`text-xs font-semibold uppercase tracking-[0.15em] mb-2 ${g.textMuted}`}>Medienauftritte</p>
                     <div className="flex items-center gap-3">
                       {[
                         { src: "/images/medienauftrite/wien-live-logo.png", alt: "Wien Live Look Magazin", width: 80, height: 40 },
@@ -1190,7 +894,7 @@ function MainContent() {
                           alt={media.alt}
                           width={media.width}
                           height={media.height}
-                          className={`object-contain h-6 w-auto ${theme === 'dark' ? 'brightness-0 invert opacity-60' : 'opacity-50'} transition-all duration-300`}
+                          className="object-contain h-6 w-auto brightness-0 invert opacity-60 transition-all duration-300"
                           loading="lazy"
                         />
                       ))}
@@ -1214,15 +918,15 @@ function MainContent() {
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
               <div>
-                <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-2 transition-colors duration-700 ${g.text}`}>
+                <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-2 ${g.text}`}>
                   Portfolio - Ausgewählte Arbeiten
                 </h2>
-                <p className={`max-w-xl transition-colors duration-700 ${g.textSub}`}>Ein Einblick in meine Projekte für namhafte Kunden aus Wien.</p>
+                <p className={`max-w-xl ${g.textSub}`}>Ein Einblick in meine Projekte für namhafte Kunden aus Wien.</p>
               </div>
               <div className="hidden lg:flex items-center gap-2 pb-2">
                 {['left', 'right'].map(dir => (
                   <button key={dir} onClick={() => scroll(dir as 'left'|'right')} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${g.card} ${g.cardHover}`}>
-                    <i className={`fa-solid fa-chevron-${dir} transition-colors duration-700 ${g.icon}`} />
+                    <i className={`fa-solid fa-chevron-${dir} ${g.icon}`} />
                   </button>
                 ))}
               </div>
@@ -1244,16 +948,11 @@ function MainContent() {
               role="region"
               aria-label="Portfolio Projekte Carousel"
               tabIndex={0}
-              className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black/20 dark:focus:ring-white/20 rounded-lg"
+              className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/20 rounded-lg"
               style={{ scrollbarWidth: 'none' }}
               onKeyDown={(e) => {
-                if (e.key === 'ArrowLeft') {
-                  e.preventDefault();
-                  scroll('left');
-                } else if (e.key === 'ArrowRight') {
-                  e.preventDefault();
-                  scroll('right');
-                }
+                if (e.key === 'ArrowLeft') { e.preventDefault(); scroll('left'); }
+                else if (e.key === 'ArrowRight') { e.preventDefault(); scroll('right'); }
               }}
               onMouseDown={(e) => {
                 const el = scrollRef.current;
@@ -1273,17 +972,11 @@ function MainContent() {
               }}
               onMouseUp={() => {
                 const el = scrollRef.current;
-                if (el) {
-                  el.dataset.isDragging = 'false';
-                  el.style.scrollBehavior = 'smooth';
-                }
+                if (el) { el.dataset.isDragging = 'false'; el.style.scrollBehavior = 'smooth'; }
               }}
               onMouseLeave={() => {
                 const el = scrollRef.current;
-                if (el) {
-                  el.dataset.isDragging = 'false';
-                  el.style.scrollBehavior = 'smooth';
-                }
+                if (el) { el.dataset.isDragging = 'false'; el.style.scrollBehavior = 'smooth'; }
               }}
             >
               {featuredProjects.map((p, i) => (
@@ -1347,8 +1040,8 @@ function MainContent() {
         <div className="py-20">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Fotoshooting Wien - Meine Dienstleistungen</h2>
-              <p className={`max-w-2xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Vielseitige Fotografie-Dienstleistungen für Unternehmen und Privatpersonen in Wien.</p>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight ${g.text}`}>Fotoshooting Wien - Meine Dienstleistungen</h2>
+              <p className={`max-w-2xl mx-auto text-lg ${g.textSub}`}>Vielseitige Fotografie-Dienstleistungen für Unternehmen und Privatpersonen in Wien.</p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1360,19 +1053,17 @@ function MainContent() {
                         <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
                           <div>
                             <div className="flex items-center gap-2 mb-1">
-                              <h3 className={`text-base sm:text-lg font-semibold transition-colors duration-500 ${g.text}`}>{s.title}</h3>
+                              <h3 className={`text-base sm:text-lg font-semibold ${g.text}`}>{s.title}</h3>
                               {s.popular && (
                                 <span className="text-[10px] font-semibold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded">
                                   Beliebt
                                 </span>
                               )}
                             </div>
-                            <p className={`text-xs leading-relaxed line-clamp-3 transition-colors duration-500 ${g.textSub}`}>{s.description}</p>
+                            <p className={`text-xs leading-relaxed line-clamp-3 ${g.textSub}`}>{s.description}</p>
                           </div>
                           <div className="flex items-center justify-between">
-                            <span className={`text-sm font-semibold transition-colors duration-500 ${g.text}`}>
-                              {s.price}
-                            </span>
+                            <span className={`text-sm font-semibold ${g.text}`}>{s.price}</span>
                             <span className={`inline-flex items-center gap-1.5 text-xs font-medium group-hover:gap-2 transition-all ${g.textMuted}`}>
                               Details <i className="fa-solid fa-arrow-right text-[10px]" />
                             </span>
@@ -1402,8 +1093,8 @@ function MainContent() {
         <div className="py-16">
           <div className="container mx-auto px-4 md:px-8 max-w-5xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Warum Kunden mich wählen</h2>
-              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Was mich von anderen Fotografen in Wien unterscheidet</p>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight ${g.text}`}>Warum Kunden mich wählen</h2>
+              <p className={`max-w-xl mx-auto text-lg ${g.textSub}`}>Was mich von anderen Fotografen in Wien unterscheidet</p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1442,8 +1133,8 @@ function MainContent() {
         <div className="py-20">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Kundenstimmen</h2>
-              <p className={`max-w-2xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Was meine Kunden über die Zusammenarbeit sagen.</p>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight ${g.text}`}>Kundenstimmen</h2>
+              <p className={`max-w-2xl mx-auto text-lg ${g.textSub}`}>Was meine Kunden über die Zusammenarbeit sagen.</p>
             </motion.div>
 
             <div className="max-w-4xl mx-auto" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
@@ -1451,16 +1142,16 @@ function MainContent() {
                 <AnimatePresence mode="wait">
                   <motion.div key={currentTestimonial} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }} className="text-center space-y-8">
                     <div className="flex justify-center gap-1">
-                      {[...Array(5)].map((_, i) => <i key={i} className={`fa-solid fa-star text-lg ${theme === 'dark' ? 'text-white' : 'text-black'}`} />)}
+                      {[...Array(5)].map((_, i) => <i key={i} className="fa-solid fa-star text-lg text-white" />)}
                     </div>
-                    <blockquote className={`text-xl md:text-2xl font-light italic leading-relaxed transition-colors duration-700 ${g.text}`}>
+                    <blockquote className={`text-xl md:text-2xl font-light italic leading-relaxed ${g.text}`}>
                       &ldquo;{testimonials[currentTestimonial].quote}&rdquo;
                     </blockquote>
                     <div className="flex flex-col items-center gap-3">
                       <div>
-                        <p className={`font-semibold text-lg transition-colors duration-700 ${g.text}`}>{testimonials[currentTestimonial].author}</p>
-                        {testimonials[currentTestimonial].position && <p className={`transition-colors duration-700 ${g.textSub}`}>{testimonials[currentTestimonial].position}</p>}
-                        {testimonials[currentTestimonial].company && <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>{testimonials[currentTestimonial].company}</p>}
+                        <p className={`font-semibold text-lg ${g.text}`}>{testimonials[currentTestimonial].author}</p>
+                        {testimonials[currentTestimonial].position && <p className={g.textSub}>{testimonials[currentTestimonial].position}</p>}
+                        {testimonials[currentTestimonial].company && <p className={`text-sm ${g.textMuted}`}>{testimonials[currentTestimonial].company}</p>}
                       </div>
                     </div>
                   </motion.div>
@@ -1475,7 +1166,7 @@ function MainContent() {
                     aria-selected={i === currentTestimonial}
                     aria-label={`Testimonial ${i + 1} von ${t.author}`}
                     onClick={() => setCurrentTestimonial(i)}
-                    className={`h-2 rounded-full transition-all duration-300 ${i === currentTestimonial ? `${theme === 'dark' ? 'bg-white' : 'bg-black'} w-8` : `${theme === 'dark' ? 'bg-white/30 hover:bg-white/50' : 'bg-black/30 hover:bg-black/50'} w-2`}`}
+                    className={`h-2 rounded-full transition-all duration-300 ${i === currentTestimonial ? 'bg-white w-8' : 'bg-white/30 hover:bg-white/50 w-2'}`}
                   />
                 ))}
               </div>
@@ -1489,8 +1180,8 @@ function MainContent() {
         <div className="py-16">
           <div className="container mx-auto px-4 md:px-8 max-w-5xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>So einfach geht&apos;s</h2>
-              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>In drei Schritten zu Ihren perfekten Fotos</p>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight ${g.text}`}>So einfach geht&apos;s</h2>
+              <p className={`max-w-xl mx-auto text-lg ${g.textSub}`}>In drei Schritten zu Ihren perfekten Fotos</p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
@@ -1509,14 +1200,12 @@ function MainContent() {
                 >
                   <div className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 ${g.card}`}>
                     <i className={`fa-solid ${item.icon} text-2xl ${g.icon}`} />
-                    <span className={`absolute -top-3 -right-3 w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center ${
-                      theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
-                    }`}>
+                    <span className="absolute -top-3 -right-3 w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center bg-white text-black">
                       {item.step}
                     </span>
                   </div>
                   <h3 className={`text-xl font-semibold mb-3 ${g.text}`}>{item.title}</h3>
-                  <p className={`${g.textSub}`}>{item.description}</p>
+                  <p className={g.textSub}>{item.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -1529,8 +1218,8 @@ function MainContent() {
         <div className="py-16">
           <div className="container mx-auto px-4 md:px-8 max-w-3xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight transition-colors duration-700 ${g.text}`}>Häufige Fragen</h2>
-              <p className={`max-w-xl mx-auto text-lg transition-colors duration-700 ${g.textSub}`}>Antworten auf die wichtigsten Fragen</p>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight ${g.text}`}>Häufige Fragen</h2>
+              <p className={`max-w-xl mx-auto text-lg ${g.textSub}`}>Antworten auf die wichtigsten Fragen</p>
             </motion.div>
 
             <div className="space-y-3">
@@ -1583,10 +1272,10 @@ function MainContent() {
               <div className={`p-10 md:p-16 rounded-3xl text-center ${g.card}`}>
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="space-y-8">
                   <div className={`w-20 h-20 mx-auto rounded-2xl flex items-center justify-center ${g.iconBg}`}>
-                    <i className={`fa-solid fa-camera text-3xl transition-colors duration-700 ${g.icon}`} />
+                    <i className={`fa-solid fa-camera text-3xl ${g.icon}`} />
                   </div>
-                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight transition-colors duration-700 ${g.text}`}>Bereit für Ihr Fotoshooting in Wien?</h2>
-                  <p className={`text-xl max-w-2xl mx-auto transition-colors duration-700 ${g.textSub}`}>Lassen Sie uns gemeinsam Ihre Vision verwirklichen. Kontaktieren Sie mich für ein unverbindliches Beratungsgespräch.</p>
+                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight ${g.text}`}>Bereit für Ihr Fotoshooting in Wien?</h2>
+                  <p className={`text-xl max-w-2xl mx-auto ${g.textSub}`}>Lassen Sie uns gemeinsam Ihre Vision verwirklichen. Kontaktieren Sie mich für ein unverbindliches Beratungsgespräch.</p>
 
                   <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
                     <a href="tel:+436608459895" className={`flex items-center gap-2 ${g.text} hover:opacity-70 transition-opacity`}>
@@ -1608,7 +1297,7 @@ function MainContent() {
                   <p className={`text-sm ${g.textMuted}`}>
                     Keine versteckten Kosten · Unverbindlich
                   </p>
-                  <div className={`flex flex-wrap justify-center gap-6 pt-2 text-sm transition-colors duration-700 ${g.textMuted}`}>
+                  <div className={`flex flex-wrap justify-center gap-6 pt-2 text-sm ${g.textMuted}`}>
                     <span className="flex items-center gap-2"><i className="fa-solid fa-clock" /> Antwort in 24h</span>
                     <span className="flex items-center gap-2"><i className="fa-solid fa-hand-holding-heart" /> Unverbindlich</span>
                     <span className="flex items-center gap-2"><i className="fa-solid fa-credit-card" /> Keine Anzahlung</span>
@@ -1620,65 +1309,7 @@ function MainContent() {
         </div>
       </Section>
 
-      {/* ========== FOOTER ========== */}
-      <footer className={`relative py-20 overflow-hidden transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
-        <ViewfinderBg />
-        <div className={`absolute inset-0 transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0a0a0a]/90' : 'bg-white/90'}`} />
-
-        <div className="relative z-10 container mx-auto px-4 md:px-8 max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div>
-              <Image
-                src="/images/logos/fotograf-wien-logo.svg"
-                alt="Foto in Wien - Professioneller Fotograf"
-                width={150}
-                height={40}
-                className={`h-10 w-auto mb-4 transition-all duration-500 ${theme === 'dark' ? '' : 'invert'}`}
-              />
-              <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>Eventfotografie, Porträtfotografie, Businessfotografie, und Produktfotografie in Wien.</p>
-            </div>
-            {[
-              { title: 'Navigation', links: [{ label: 'Startseite', href: '/' }, { label: 'Portfolio', href: '/portfolio/' }, { label: 'Leistungen', href: '/leistungen/' }, { label: 'Kontakt', href: '/kontakt/' }] },
-              { title: 'Leistungen', links: [{ label: 'Businessfotografie', href: '/leistungen/businessfotografie/' }, { label: 'Eventfotografie', href: '/leistungen/eventfotografie/' }, { label: 'Portraitfotografie', href: '/leistungen/portraitfotografie/' }, { label: 'Produktfotografie', href: '/leistungen/produktfotografie/' }] },
-            ].map(col => (
-              <div key={col.title}>
-                <h4 className={`font-semibold mb-4 transition-colors duration-700 ${g.text}`}>{col.title}</h4>
-                <ul className="space-y-2">
-                  {col.links.map(l => <li key={l.href}><Link href={l.href} className={`text-sm transition-colors ${g.textMuted}`}>{l.label}</Link></li>)}
-                </ul>
-              </div>
-            ))}
-            <div>
-              <h4 className={`font-semibold mb-4 transition-colors duration-700 ${g.text}`}>Kontakt</h4>
-              <ul className={`space-y-2 text-sm transition-colors duration-700 ${g.textMuted}`}>
-                <li className="flex items-center gap-2"><i className="fa-solid fa-location-dot w-4" /> Wien, Österreich</li>
-                <li className="flex items-center gap-2"><i className="fa-solid fa-envelope w-4" /> info@fotoinwien.at</li>
-                <li className="flex items-center gap-2"><i className="fa-solid fa-phone w-4" /> +43 660-845-9895</li>
-                <li className="flex items-center gap-2 mt-3"><i className="fa-solid fa-clock w-4" /> Mo-Fr: 09:00 - 18:00</li>
-                <li className="flex items-center gap-2"><i className="fa-solid fa-calendar w-4" /> Sa: Nach Vereinbarung</li>
-              </ul>
-              <div className="flex gap-4 mt-4">
-                {[
-                  { icon: 'instagram', href: 'https://www.instagram.com/fotoinwien/' },
-                  { icon: 'facebook', href: 'https://www.facebook.com/fotoinwien/' },
-                  { icon: 'whatsapp', href: 'https://wa.me/436608459895' }
-                ].map(s => (
-                  <a key={s.icon} href={s.href} target="_blank" rel="noopener noreferrer" className={`transition-colors hover:opacity-70 ${g.textMuted}`}>
-                    <i className={`fa-brands fa-${s.icon} text-xl`} />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className={`border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 ${g.divider}`}>
-            <p className={`text-sm transition-colors duration-700 ${g.textMuted}`}>© 2026 fotoinwien.at. Alle Rechte vorbehalten.</p>
-            <div className={`flex gap-6 text-sm transition-colors duration-700 ${g.textMuted}`}>
-              <Link href="/impressum/">Impressum</Link>
-              <Link href="/datenschutz/">Datenschutz</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
@@ -1687,11 +1318,5 @@ function MainContent() {
 // EXPORT
 // ============================================
 export default function HomePage() {
-  return (
-    <ThemeProvider>
-      <MouseProvider>
-        <MainContent />
-      </MouseProvider>
-    </ThemeProvider>
-  );
+  return <MainContent />;
 }
